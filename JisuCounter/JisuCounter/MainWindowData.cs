@@ -41,7 +41,7 @@ namespace JisuCounter
 
         public void DBOpen()
         {
-            DBConnect.GetInstance().Open(@"Data Source=C:\Users\k.yamamoto03\Documents\社内システム\時数カウンター\JisuCounter.sqlite3");
+            DBConnect.GetInstance().Open(@"Data Source=JisuCounter.sqlite3");
             MS_KYOUKA_CACHE.CacheFill();
 
         }
