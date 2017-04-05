@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JisuCounter", "JisuCounter\JisuCounter.csproj", "{E7D6EF8B-8751-4992-8AFD-542DBFF833D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JisuCounterData", "JisuCounterData\JisuCounterData.csproj", "{ED8D596E-ACCA-4EA0-9136-93654A4F927F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7D6EF8B-8751-4992-8AFD-542DBFF833D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7D6EF8B-8751-4992-8AFD-542DBFF833D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7D6EF8B-8751-4992-8AFD-542DBFF833D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7D6EF8B-8751-4992-8AFD-542DBFF833D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED8D596E-ACCA-4EA0-9136-93654A4F927F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED8D596E-ACCA-4EA0-9136-93654A4F927F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED8D596E-ACCA-4EA0-9136-93654A4F927F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED8D596E-ACCA-4EA0-9136-93654A4F927F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

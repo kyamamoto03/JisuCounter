@@ -1,0 +1,66 @@
+﻿<Window xmlns:Control="clr-namespace:JisuCounter.Control"  x:Class="JisuCounter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JisuCounter"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="673.214" Width="1258.357" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="学年" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                <ComboBox ItemsSource="{Binding MsGakunen}" DisplayMemberPath="GAKUNEN_NAME" Grid.Column="1" Height="30" VerticalAlignment="Center"/>
+                <Label Grid.Column="2" Content="日付" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                <ComboBox Grid.Column="3" Height="30" VerticalAlignment="Center"/>
+
+            </Grid>
+        </Grid>
+        <Grid  Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <Grid x:Name="CalenderGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="130"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="95"/>
+                    <RowDefinition Height="95"/>
+                    <RowDefinition Height="95"/>
+                    <RowDefinition Height="95"/>
+                    <RowDefinition Height="95"/>
+                    <RowDefinition Height="95"/>
+                </Grid.RowDefinitions>
+            </Grid>
+            <Grid Grid.Column="1">
+                <StackPanel Orientation="Horizontal">
+
+                    <GroupBox Header="月合計" BorderThickness="2" >
+                        <StackPanel x:Name="MonthSum" Orientation="Vertical"/>
+                    </GroupBox>
+                    <GroupBox Header="年合計">
+                        <StackPanel x:Name="YearSum" Orientation="Vertical"/>
+                    </GroupBox>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
