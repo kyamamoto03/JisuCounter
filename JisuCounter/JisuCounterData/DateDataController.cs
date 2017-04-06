@@ -65,5 +65,68 @@ order by JIKANWARI,KOMA
             }
             return retDatas;
         }
+
+        public void Save(List<DateData> dateDatas, MS_GAKUNEN Gakunen, int Year, int Month)
+        {
+            using (SQLiteTransaction trans = DBConnect.GetConnection().BeginTransaction())
+            {
+                DeleteYearMonth(Gakunen, Year, Month);
+
+                foreach(var d in dateDatas)
+                {
+                    Insert(d);
+                }
+                trans.Commit();
+            }
+        }
+
+        private void Insert(DateData dateData)
+        {
+            #region SQL 
+            string SQL = @"
+insert into DATE_DATA(
+MS_GAKUNEN_ID,
+JIKANWARI,
+KOMA,
+MS_KYOUKA_ID)
+values(
+:MS_GAKUNEN_ID,
+:JIKANWARI,
+:KOMA,
+:MS_KYOUKA_ID)
+
+";
+            #endregion
+            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            {
+                command.Parameters.AddWithValue(":MS_GAKUNEN_ID", dateData.MS_GAKUNEN_ID);
+                command.Parameters.AddWithValue(":JIKANWARI", dateData.JIKANWARI);
+                command.Parameters.AddWithValue(":KOMA", dateData.KOMA);
+                command.Parameters.AddWithValue(":MS_KYOUKA_ID", dateData.MS_KYOUKA_ID);
+
+                command.ExecuteNonQuery();
+            }
+
+        }
+        private void DeleteYearMonth(MS_GAKUNEN Gakunen, int Year, int Month)
+        {
+            #region SQL 
+            string SQL = @"
+delete from DATE_DATA
+where MS_GAKUNEN_ID = :MS_GAKUNEN_ID
+and strftime('%Y-%m', JIKANWARI) = :JIKANWARI
+";
+            #endregion
+            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendFormat("{0}-{1}", Year, Month.ToString("D2"));
+
+                command.Parameters.AddWithValue(":MS_GAKUNEN_ID", Gakunen.MS_GAKUNEN_ID);
+                command.Parameters.AddWithValue(":JIKANWARI", sb.ToString());
+
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }

@@ -45,5 +45,9 @@ namespace JisuCounter
             mainWindowData.MakeMonthSum();
         }
 
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindowData.Save();
+        }
     }
 }

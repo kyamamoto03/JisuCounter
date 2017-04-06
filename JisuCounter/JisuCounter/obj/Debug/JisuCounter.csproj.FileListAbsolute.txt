@@ -50,3 +50,4 @@ C:\Users\k.yamamoto03\Source\Repos\JisuCounter\JisuCounter\JisuCounter\obj\Debug
 C:\Users\k.yamamoto03\Source\Repos\JisuCounter\JisuCounter\JisuCounter\obj\Debug\JisuCounter.csproj.GenerateResource.Cache
 C:\Users\k.yamamoto03\Source\Repos\JisuCounter\JisuCounter\JisuCounter\obj\Debug\JisuCounter.exe
 C:\Users\k.yamamoto03\Source\Repos\JisuCounter\JisuCounter\JisuCounter\obj\Debug\JisuCounter.pdb
+C:\Users\k.yamamoto03\Source\Repos\JisuCounter\JisuCounter\JisuCounter\bin\Debug\System.ValueTuple.dll

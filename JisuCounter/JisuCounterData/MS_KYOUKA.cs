@@ -16,6 +16,8 @@ namespace JisuCounterData
         public int MS_KYOUKA_ID { get; set; }
         public string KYOUKA_NAME { get; set; }
         public double KYOUKA_RATIO { get; set; }
+        public string COLOR { get; set; }
+
     }
 
     public class MS_KYOUKA_CACHE

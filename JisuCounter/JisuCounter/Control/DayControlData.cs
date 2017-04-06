@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using JisuCounterData;
+using System.Drawing;
 
 namespace JisuCounter.Control
 {
@@ -22,6 +23,8 @@ namespace JisuCounter.Control
             }
         }
         #endregion
+
+        string DEFALUT_COLOR = "Transparent";
 
         public DayControlData()
         {
@@ -41,6 +44,12 @@ namespace JisuCounter.Control
 
         public void Refresh()
         {
+            RaisePropertyChanged("Koma1_Foreground");
+            RaisePropertyChanged("Koma2_Foreground");
+            RaisePropertyChanged("Koma3_Foreground");
+            RaisePropertyChanged("Koma4_Foreground");
+            RaisePropertyChanged("Koma5_Foreground");
+            RaisePropertyChanged("Koma6_Foreground");
             RaisePropertyChanged("KOMA1");
             RaisePropertyChanged("KOMA2");
             RaisePropertyChanged("KOMA3");
@@ -73,6 +82,115 @@ namespace JisuCounter.Control
             {
                 _Day = value;
                 RaisePropertyChanged("Day");
+            }
+        }
+
+        public string Koma1_Foreground
+        {
+            get
+            {
+                int KOMA = 1;
+                var KomaData = _DateDates.Where(x => x.KOMA == KOMA).FirstOrDefault();
+                
+                if (KomaData != null)
+                {
+                    var kyouka = MS_KYOUKA_CACHE.Get(KomaData.MS_KYOUKA_ID);
+                    if (kyouka.COLOR != null)
+                    {
+                        return kyouka.COLOR; 
+                    }
+                }
+                return DEFALUT_COLOR;
+            }
+        }
+        public string Koma2_Foreground
+        {
+            get
+            {
+                int KOMA = 2;
+                var KomaData = _DateDates.Where(x => x.KOMA == KOMA).FirstOrDefault();
+
+                if (KomaData != null)
+                {
+                    var kyouka = MS_KYOUKA_CACHE.Get(KomaData.MS_KYOUKA_ID);
+                    if (kyouka.COLOR != null)
+                    {
+                        return kyouka.COLOR;
+                    }
+                }
+                return DEFALUT_COLOR;
+            }
+        }
+        public string Koma3_Foreground
+        {
+            get
+            {
+                int KOMA = 3;
+                var KomaData = _DateDates.Where(x => x.KOMA == KOMA).FirstOrDefault();
+
+                if (KomaData != null)
+                {
+                    var kyouka = MS_KYOUKA_CACHE.Get(KomaData.MS_KYOUKA_ID);
+                    if (kyouka.COLOR != null)
+                    {
+                        return kyouka.COLOR;
+                    }
+                }
+                return DEFALUT_COLOR;
+            }
+        }
+        public string Koma4_Foreground
+        {
+            get
+            {
+                int KOMA = 4;
+                var KomaData = _DateDates.Where(x => x.KOMA == KOMA).FirstOrDefault();
+
+                if (KomaData != null)
+                {
+                    var kyouka = MS_KYOUKA_CACHE.Get(KomaData.MS_KYOUKA_ID);
+                    if (kyouka.COLOR != null)
+                    {
+                        return kyouka.COLOR;
+                    }
+                }
+                return DEFALUT_COLOR;
+            }
+        }
+        public string Koma5_Foreground
+        {
+            get
+            {
+                int KOMA = 5;
+                var KomaData = _DateDates.Where(x => x.KOMA == KOMA).FirstOrDefault();
+
+                if (KomaData != null)
+                {
+                    var kyouka = MS_KYOUKA_CACHE.Get(KomaData.MS_KYOUKA_ID);
+                    if (kyouka.COLOR != null)
+                    {
+                        return kyouka.COLOR;
+                    }
+                }
+                return DEFALUT_COLOR;
+            }
+        }
+        public string Koma6_Foreground
+        {
+            get
+            {
+                int KOMA = 6;
+                var KomaData = _DateDates.Where(x => x.KOMA == KOMA).FirstOrDefault();
+
+                if (KomaData != null)
+                {
+                    var kyouka = MS_KYOUKA_CACHE.Get(KomaData.MS_KYOUKA_ID);
+                    if (kyouka.COLOR != null)
+                    {
+                        return kyouka.COLOR;
+                    }
+                }
+                return DEFALUT_COLOR;
             }
         }
 
