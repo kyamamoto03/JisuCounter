@@ -36,13 +36,13 @@ namespace JisuCounter
             DataContext = mainWindowData;
 
             mainWindowData.MakeMonthSumBase(MonthSum);
-            mainWindowData.MakeMonthSum(2017, 4);
             mainWindowData.MakeCalender(CalenderGrid,2017, 4,new Action<List<JisuCounterData.DateData>>(x =>
             {
                 Control.DayEditWindow window = new Control.DayEditWindow();
                 window.DayEditWindowData.DateDatas = x;
                 window.ShowDialog();
             }));
+            mainWindowData.MakeMonthSum();
         }
 
     }

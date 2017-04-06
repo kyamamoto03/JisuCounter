@@ -9,7 +9,7 @@ namespace JisuCounterData
 {
     public class DateDataController
     {
-        public IList<DateData> Get(int MS_GAKUNEN_ID,int Year,int Month)
+        public List<DateData> Get(int MS_GAKUNEN_ID,int Year,int Month)
         {
             #region SQL
             string SQL = @"
@@ -48,36 +48,21 @@ order by JIKANWARI,KOMA
             return retDatas;
         }
 
-        public Dictionary<string,double>Get月時数(int Year,int Month)
+        public Dictionary<string,double>Get月時数(List<DateData> dateData)
         {
-            #region SQL
-            string SQL = @"
-select MS_KYOUKA.KYOUKA_NAME,sum(MS_KYOUKA.KYOUKA_RATIO)
-
-from DATE_DATA
-inner join MS_KYOUKA on MS_KYOUKA.MS_KYOUKA_ID = DATE_DATA.MS_KYOUKA_ID
-
-where strftime('%Y-%m',DATE_DATA.JIKANWARI) = '2017-04'
-group by MS_KYOUKA.KYOUKA_NAME;
-";
-            #endregion
-
             Dictionary<string, double> retDatas = new Dictionary<string, double>();
 
-            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            var joinDatas = dateData.Join(MS_KYOUKA_CACHE.GetAll(), x => x.MS_KYOUKA_ID, j => j.MS_KYOUKA_ID, (x, j) => new
             {
-                var reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    string key;
-                    double sum;
+                KYOUKA_NAME = j.KYOUKA_NAME,
+                RATIO = j.KYOUKA_RATIO
+            });
+            var groupDatas = joinDatas.GroupBy(x => x.KYOUKA_NAME).Select(a => new { KYOUKA_NAME = a.Key, Sum = a.Sum(x => x.RATIO) });
 
-                    key = reader.GetString(0);
-                    sum = reader.GetDouble(1);
-                    retDatas.Add(key, sum);
-                }
+            foreach(var d in groupDatas)
+            {
+                retDatas.Add(d.KYOUKA_NAME, d.Sum);
             }
-
             return retDatas;
         }
     }

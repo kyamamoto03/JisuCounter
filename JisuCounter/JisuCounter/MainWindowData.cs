@@ -31,7 +31,7 @@ namespace JisuCounter
         public ObservableCollection<MS_KYOUKA> MsKyoukas { get; set; }
 
         List<DayControl> m_DayControls = new List<DayControl>();
-        IList<DateData> m_DateDatas = new List<DateData>();
+        List<DateData> m_DateDatas = new List<DateData>();
 
         public MainWindowData()
         {
@@ -151,10 +151,10 @@ namespace JisuCounter
                 MonthSum.Children.Add(grid);
             }
         }
-        public void MakeMonthSum(int Year,int Month)
+        public void MakeMonthSum()
         {
             DateDataController DateDataController = new DateDataController();
-            var datas = DateDataController.Get月時数(Year,Month);
+            var datas = DateDataController.Get月時数(m_DateDatas);
 
             foreach(var data in datas)
             {
