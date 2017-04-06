@@ -51,3 +51,8 @@ C:\Users\k.yamamoto03\Source\Repos\JisuCounter\JisuCounter\JisuCounter\obj\Debug
 C:\Users\k.yamamoto03\Source\Repos\JisuCounter\JisuCounter\JisuCounter\obj\Debug\JisuCounter.exe
 C:\Users\k.yamamoto03\Source\Repos\JisuCounter\JisuCounter\JisuCounter\obj\Debug\JisuCounter.pdb
 C:\Users\k.yamamoto03\Source\Repos\JisuCounter\JisuCounter\JisuCounter\bin\Debug\System.ValueTuple.dll
+C:\Users\kohji\Source\Repos\JisuCounter\JisuCounter\JisuCounter\bin\Debug\JisuCounter.sqlite3
+C:\Users\kohji\Source\Repos\JisuCounter\JisuCounter\JisuCounter\bin\Debug\JisuCounter.exe.config
+C:\Users\kohji\Source\Repos\JisuCounter\JisuCounter\JisuCounter\bin\Debug\JisuCounter.exe
+C:\Users\kohji\Source\Repos\JisuCounter\JisuCounter\JisuCounter\bin\Debug\JisuCounter.pdb
+C:\Users\kohji\Source\Repos\JisuCounter\JisuCounter\JisuCounter\bin\Debug\System.ValueTuple.dll

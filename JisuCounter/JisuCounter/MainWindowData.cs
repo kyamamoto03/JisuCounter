@@ -97,7 +97,7 @@ namespace JisuCounter
         }
 
 
-        public void MakeCalender(Grid CalenderGrid,int year, int month ,Action<List<JisuCounterData.DateData>> ClickAction)
+        public void MakeCalender(Grid CalenderGrid,int year, int month ,Func<List<JisuCounterData.DateData>,DateTime, JisuCounterData.DateData> ClickAction)
         {
             LoadDateData(year, month);
 
@@ -111,10 +111,17 @@ namespace JisuCounter
                 DayControl dayControl = new DayControl();
                 dayControl.SetValue(Grid.RowProperty, Row);
                 dayControl.SetValue(Grid.ColumnProperty, Col++);
+                DateTime date = new DateTime(ThisMonth.Year, ThisMonth.Month, i);
+
                 dayControl.DayControlData.Add(m_DateDatas.Where(x => x.JIKANWARI.ToString("yyyyMMdd") == ThisMonth.Year.ToString() + ThisMonth.Month.ToString("D2") + i.ToString("D2")));
                 dayControl.ClickAction = new Action<List<JisuCounterData.DateData>>(x =>
                 {
-                    ClickAction(x);
+                    var EditData = ClickAction(x, date);
+                    var a = m_DateDatas.Where(d => d.JIKANWARI == EditData.JIKANWARI).FirstOrDefault();
+                    if (a == null)
+                    {
+                        m_DateDatas.Add(EditData);
+                    }
                     dayControl.Refresh();
                     MakeMonthSum();
                 });

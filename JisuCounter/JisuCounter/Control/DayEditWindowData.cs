@@ -24,6 +24,9 @@ namespace JisuCounter.Control
         }
         #endregion
 
+        public DateTime Jikanwari;
+        public DateData TargetDateData;
+
         public List<DateData> DateDatas;
 
         ObservableCollection<MS_KYOUKA> _KyoukaMaster = new ObservableCollection<MS_KYOUKA>();
@@ -50,29 +53,114 @@ namespace JisuCounter.Control
 
         public MS_KYOUKA Koma1
         {
-            get {
+            get
+            {
                 int SearchKoma = 1;
-                var data = DateDatas.Where(x => x.KOMA == SearchKoma).FirstOrDefault();
-                if (data == null)
-                    return null;
-
-                return MS_KYOUKA_CACHE.Get(data.MS_KYOUKA_ID);
+                return GetKoma(SearchKoma);
             }
             set
             {
                 int SearchKoma = 1;
-                var data = DateDatas.Where(x => x.KOMA == SearchKoma).FirstOrDefault();
-                if (data == null)
-                {
-                    DateData insertData = new DateData();
-
-                }
-                else
-                {
-                    data.MS_KYOUKA_ID = value.MS_KYOUKA_ID;
-                }
+                SetKoma(value, SearchKoma);
                 RaisePropertyChanged("Koma1");
             }
+        }
+        public MS_KYOUKA Koma2
+        {
+            get
+            {
+                int SearchKoma = 2;
+                return GetKoma(SearchKoma);
+            }
+            set
+            {
+                int SearchKoma = 2;
+                SetKoma(value, SearchKoma);
+                RaisePropertyChanged("Koma1");
+            }
+        }
+
+        public MS_KYOUKA Koma3
+        {
+            get
+            {
+                int SearchKoma = 3;
+                return GetKoma(SearchKoma);
+            }
+            set
+            {
+                int SearchKoma = 3;
+                SetKoma(value, SearchKoma);
+                RaisePropertyChanged("Koma1");
+            }
+        }
+
+        public MS_KYOUKA Koma4
+        {
+            get
+            {
+                int SearchKoma = 4;
+                return GetKoma(SearchKoma);
+            }
+            set
+            {
+                int SearchKoma = 4;
+                SetKoma(value, SearchKoma);
+                RaisePropertyChanged("Koma1");
+            }
+        }
+
+        public MS_KYOUKA Koma5
+        {
+            get
+            {
+                int SearchKoma = 5;
+                return GetKoma(SearchKoma);
+            }
+            set
+            {
+                int SearchKoma = 5;
+                SetKoma(value, SearchKoma);
+                RaisePropertyChanged("Koma1");
+            }
+        }
+        public MS_KYOUKA Koma6
+        {
+            get
+            {
+                int SearchKoma = 6;
+                return GetKoma(SearchKoma);
+            }
+            set
+            {
+                int SearchKoma = 6;
+                SetKoma(value, SearchKoma);
+                RaisePropertyChanged("Koma1");
+            }
+        }
+
+        private void SetKoma(MS_KYOUKA value, int SearchKoma)
+        {
+            var data = DateDatas.Where(x => x.KOMA == SearchKoma).FirstOrDefault();
+            if (data == null)
+            {
+                data = new DateData();
+                data.KOMA = SearchKoma;
+                data.JIKANWARI = Jikanwari;
+                DateDatas.Add(data);
+            }
+            TargetDateData = data;
+            data.MS_KYOUKA_ID = value.MS_KYOUKA_ID;
+
+        }
+
+        private MS_KYOUKA GetKoma(int SearchKoma)
+        {
+            var data = DateDatas.Where(x => x.KOMA == SearchKoma).FirstOrDefault();
+            if (data == null)
+                return null;
+
+            return MS_KYOUKA_CACHE.Get(data.MS_KYOUKA_ID);
         }
     }
 }
