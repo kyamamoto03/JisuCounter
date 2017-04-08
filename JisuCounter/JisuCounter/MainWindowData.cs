@@ -149,6 +149,12 @@ namespace JisuCounter
             internal Label SumLabel;
 
         }
+
+        /// <summary>
+        /// 月合計
+        /// </summary>
+        SumLabels MonthlySum;
+
         public void MakeMonthSumBase(StackPanel MonthSum)
         {
             MS_KYOUKA_Controller MsKyoukaController = new MS_KYOUKA_Controller();
@@ -157,31 +163,48 @@ namespace JisuCounter
 
             foreach(var kyouka in Kyoukas)
             {
-                Grid grid = new Grid();
-                grid.ColumnDefinitions.Add(new ColumnDefinition());
-                grid.ColumnDefinitions.Add(new ColumnDefinition());
-
-                Label label = new Label();
-                label.SetValue(Grid.ColumnProperty, 0);
-                label.Content = kyouka.KYOUKA_NAME;
-
-                System.Windows.Media.Color color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(kyouka.COLOR);
-
-                label.Foreground = new SolidColorBrush(FORE_COLOR);
-                label.Background = new SolidColorBrush(color);
-                grid.Children.Add(label);
-
-                Label SumLabel = new Label();
-                SumLabel.SetValue(Grid.ColumnProperty, 1);
-                SumLabel.Content = "0";
-                grid.Children.Add(SumLabel);
-                
-                MonthSumLabels.Add(new SumLabels { label = label, SumLabel = SumLabel });
-
-                MonthSum.Children.Add(grid);
+                var l = MakeSumLabel(kyouka);
+                MonthSumLabels.Add(l.SumLabels);
+                MonthSum.Children.Add(l.Grid);
             }
+
+            ///月の合計を追加
+            var a = MakeSumLabel(("合計","Black"));
+            MonthSumLabels.Add(a.SumLabels);
+            MonthSum.Children.Add(a.Grid);
+            MonthlySum = a.SumLabels;
         }
 
+        (SumLabels SumLabels,Grid Grid) MakeSumLabel((string KYOUKA_NAME, string COLOR)labelData)
+        {
+            Grid grid = new Grid();
+            grid.ColumnDefinitions.Add(new ColumnDefinition());
+            grid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            Label label = new Label();
+            label.SetValue(Grid.ColumnProperty, 0);
+            label.Content = labelData.KYOUKA_NAME;
+
+            System.Windows.Media.Color color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(labelData.COLOR);
+
+            label.Foreground = new SolidColorBrush(FORE_COLOR);
+            label.Background = new SolidColorBrush(color);
+            grid.Children.Add(label);
+
+            Label SumLabel = new Label();
+            SumLabel.SetValue(Grid.ColumnProperty, 1);
+            SumLabel.Content = "0";
+            grid.Children.Add(SumLabel);
+
+            SumLabels sumLabels = new SumLabels { label = label, SumLabel = SumLabel };
+            return (sumLabels,grid);
+            
+
+        }
+ 
+        /// <summary>
+        /// 次ごとの教科別時数合計
+        /// </summary>
         public void MakeMonthSum()
         {
             DateDataController DateDataController = new DateDataController();
@@ -205,6 +228,9 @@ namespace JisuCounter
                     targetLabels.SumLabel.Content = 0;
                 }
             }
+
+            ///月合計を計算
+            MonthlySum.SumLabel.Content = DateDataController.月合計(m_DateDatas);
         }
 
         public void Save()

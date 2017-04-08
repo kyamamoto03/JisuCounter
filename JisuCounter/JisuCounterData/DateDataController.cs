@@ -66,6 +66,19 @@ order by JIKANWARI,KOMA
             return retDatas;
         }
 
+        double ROUND = 10.0;
+
+        public double 月合計(List<DateData> dateData)
+        {
+            var joinDatas = dateData.Join(MS_KYOUKA_CACHE.GetAll(), x => x.MS_KYOUKA_ID, j => j.MS_KYOUKA_ID, (x, j) => new
+            {
+                KYOUKA_NAME = j.KYOUKA_NAME,
+                RATIO = j.KYOUKA_RATIO
+            });
+
+            return (int)(joinDatas.Sum(x => x.RATIO) * ROUND) / ROUND;
+        }
+
         public void Save(List<DateData> dateDatas, MS_GAKUNEN Gakunen, int Year, int Month)
         {
             using (SQLiteTransaction trans = DBConnect.GetConnection().BeginTransaction())
