@@ -73,6 +73,8 @@
     <Compile Include="Mapper.cs" />
     <Compile Include="MS_GAKUNEN_Controller.cs" />
     <Compile Include="MS_GAKUNEN.cs" />
+    <Compile Include="MS_JISU.cs" />
+    <Compile Include="MS_JISU_Controller.cs" />
     <Compile Include="MS_KYOUKA.cs" />
     <Compile Include="MS_KYOUKA_Controller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

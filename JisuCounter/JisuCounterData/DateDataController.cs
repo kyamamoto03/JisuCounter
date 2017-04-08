@@ -9,7 +9,7 @@ namespace JisuCounterData
 {
     public class DateDataController
     {
-        public List<DateData> Get(int MS_GAKUNEN_ID,int Year,int Month)
+        public List<DateData> Get(int MS_GAKUNEN_ID,int Year)
         {
             #region SQL
             string SQL = @"
@@ -21,7 +21,7 @@ MS_KYOUKA_ID
 
 from DATE_DATA
 where MS_GAKUNEN_ID = :MS_GAKUNEN_ID
-and strftime('%Y-%m',JIKANWARI) = :DATE
+and strftime('%Y-%m', JIKANWARI) >= :NENDO_START and strftime('%Y-%m', JIKANWARI) <= :NENDO_END
 order by JIKANWARI,KOMA
 
 ";
@@ -31,11 +31,11 @@ order by JIKANWARI,KOMA
 
             using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
             {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendFormat("{0}-{1}", Year, Month.ToString("D2"));
-
                 command.Parameters.AddWithValue(":MS_GAKUNEN_ID", MS_GAKUNEN_ID);
-                command.Parameters.AddWithValue(":DATE", sb.ToString());
+                var 年度 = Get年度(Year);
+
+                command.Parameters.AddWithValue(":NENDO_START", 年度.NendoStart);
+                command.Parameters.AddWithValue(":NENDO_END", 年度.NendoEnd);
 
                 var reader = command.ExecuteReader();
                 var mapper = new Mapper<DateData>();
@@ -48,11 +48,13 @@ order by JIKANWARI,KOMA
             return retDatas;
         }
 
-        public Dictionary<string,double>Get月時数(List<DateData> dateData)
+        public Dictionary<string,double>Get月時数(List<DateData> dateData,int Year,int Month)
         {
             Dictionary<string, double> retDatas = new Dictionary<string, double>();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("{0}{1}", Year, Month.ToString("d2"));
 
-            var joinDatas = dateData.Join(MS_KYOUKA_CACHE.GetAll(), x => x.MS_KYOUKA_ID, j => j.MS_KYOUKA_ID, (x, j) => new
+            var joinDatas = dateData.Where(x => x.JIKANWARI.ToString("yyyyMM") == sb.ToString()).Join(MS_KYOUKA_CACHE.GetAll(), x => x.MS_KYOUKA_ID, j => j.MS_KYOUKA_ID, (x, j) => new
             {
                 KYOUKA_NAME = j.KYOUKA_NAME,
                 RATIO = j.KYOUKA_RATIO
@@ -66,11 +68,32 @@ order by JIKANWARI,KOMA
             return retDatas;
         }
 
+        public Dictionary<string, double> Get年時数(List<DateData> dateData)
+        {
+            Dictionary<string, double> retDatas = new Dictionary<string, double>();
+
+            var joinDatas = dateData.Join(MS_KYOUKA_CACHE.GetAll(), x => x.MS_KYOUKA_ID, j => j.MS_KYOUKA_ID, (x, j) => new
+            {
+                KYOUKA_NAME = j.KYOUKA_NAME,
+                RATIO = j.KYOUKA_RATIO
+            });
+            var groupDatas = joinDatas.GroupBy(x => x.KYOUKA_NAME).Select(a => new { KYOUKA_NAME = a.Key, Sum = a.Sum(x => x.RATIO) });
+
+            foreach (var d in groupDatas)
+            {
+                retDatas.Add(d.KYOUKA_NAME, d.Sum);
+            }
+            return retDatas;
+        }
+
         double ROUND = 10.0;
 
-        public double 月合計(List<DateData> dateData)
+        public double 月合計(List<DateData> dateData, int Year, int Month)
         {
-            var joinDatas = dateData.Join(MS_KYOUKA_CACHE.GetAll(), x => x.MS_KYOUKA_ID, j => j.MS_KYOUKA_ID, (x, j) => new
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("{0}{1}", Year, Month.ToString("d2"));
+
+            var joinDatas = dateData.Where(x => x.JIKANWARI.ToString("yyyyMM") == sb.ToString()).Join(MS_KYOUKA_CACHE.GetAll(), x => x.MS_KYOUKA_ID, j => j.MS_KYOUKA_ID, (x, j) => new
             {
                 KYOUKA_NAME = j.KYOUKA_NAME,
                 RATIO = j.KYOUKA_RATIO
@@ -79,11 +102,11 @@ order by JIKANWARI,KOMA
             return (int)(joinDatas.Sum(x => x.RATIO) * ROUND) / ROUND;
         }
 
-        public void Save(List<DateData> dateDatas, MS_GAKUNEN Gakunen, int Year, int Month)
+        public void Save(List<DateData> dateDatas, MS_GAKUNEN Gakunen, int Year)
         {
             using (SQLiteTransaction trans = DBConnect.GetConnection().BeginTransaction())
             {
-                DeleteYearMonth(Gakunen, Year, Month);
+                DeleteYearMonth(Gakunen, Year);
 
                 foreach(var d in dateDatas)
                 {
@@ -121,25 +144,38 @@ values(
             }
 
         }
-        private void DeleteYearMonth(MS_GAKUNEN Gakunen, int Year, int Month)
+        private void DeleteYearMonth(MS_GAKUNEN Gakunen, int Year)
         {
             #region SQL 
             string SQL = @"
 delete from DATE_DATA
+
 where MS_GAKUNEN_ID = :MS_GAKUNEN_ID
-and strftime('%Y-%m', JIKANWARI) = :JIKANWARI
+and strftime('%Y-%m', JIKANWARI) >= :NENDO_START and strftime('%Y-%m', JIKANWARI) <= :NENDO_END
+
 ";
             #endregion
             using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
             {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendFormat("{0}-{1}", Year, Month.ToString("D2"));
+                var 年度 = Get年度(Year);
 
                 command.Parameters.AddWithValue(":MS_GAKUNEN_ID", Gakunen.MS_GAKUNEN_ID);
-                command.Parameters.AddWithValue(":JIKANWARI", sb.ToString());
+                command.Parameters.AddWithValue(":NENDO_START", 年度.NendoStart);
+                command.Parameters.AddWithValue(":NENDO_END", 年度.NendoEnd);
 
                 command.ExecuteNonQuery();
             }
+        }
+        (string NendoStart,string NendoEnd)Get年度(int Year)
+        {
+            (string NendoStart, string NendoEnd) ret;
+
+            int end = Year + 1;
+
+            ret.NendoStart = Year.ToString() + "-04";
+            ret.NendoEnd = end.ToString() + "-03";
+
+            return ret;
         }
     }
 }

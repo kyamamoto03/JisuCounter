@@ -31,7 +31,7 @@
         <Grid  Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="250"/>
             </Grid.ColumnDefinitions>
             <Grid x:Name="CalenderGrid">
                 <Grid.ColumnDefinitions>

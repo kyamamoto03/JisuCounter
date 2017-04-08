@@ -36,6 +36,8 @@ namespace JisuCounter
             DataContext = mainWindowData;
 
             mainWindowData.MakeMonthSumBase(MonthSum);
+            mainWindowData.MakeYearSumBase(YearSum);
+
             mainWindowData.MakeCalender(CalenderGrid,2017, 4,new Func<List<JisuCounterData.DateData>,DateTime, JisuCounterData.DateData>((x,jikanwari) =>
             {
                 Control.DayEditWindow window = new Control.DayEditWindow();
@@ -45,6 +47,9 @@ namespace JisuCounter
                 return window.DayEditWindowData.TargetDateData;
             }));
             mainWindowData.MakeMonthSum();
+            mainWindowData.MakeYearSum();
+
+
         }
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
