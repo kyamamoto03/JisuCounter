@@ -38,18 +38,14 @@ namespace JisuCounter
             mainWindowData.MakeMonthSumBase(MonthSum);
             mainWindowData.MakeYearSumBase(YearSum);
 
-            mainWindowData.MakeCalender(CalenderGrid,2017, 4,new Func<List<JisuCounterData.DateData>,DateTime, JisuCounterData.DateData>((x,jikanwari) =>
-            {
-                Control.DayEditWindow window = new Control.DayEditWindow();
-                window.DayEditWindowData.DateDatas = x;
-                window.DayEditWindowData.Jikanwari = jikanwari;
-                window.ShowDialog();
-                return window.DayEditWindowData.TargetDateData;
-            }));
+
             mainWindowData.MakeMonthSum();
             mainWindowData.MakeYearSum();
 
+            mainWindowData.CalenderGrid = CalenderGrid;
 
+            mainWindowData.SelectedYear = 2017;
+            mainWindowData.SelectedMonth = 4;
         }
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)

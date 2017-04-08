@@ -37,9 +37,74 @@ namespace JisuCounter
 
         Color FORE_COLOR = Colors.White;
 
-        public int SelectedYear { get; set; }
-        public int SelectedMonth { get; set; }
+        #region 年度選択
+        int _SelectedYear { get; set; }
+        public int SelectedYear
+        {
+            get
+            {
+                return _SelectedYear;
+            }
+            set
+            {
+                _SelectedYear = value;
+                LoadDateData(_SelectedYear);
+                RaisePropertyChanged("SelectedYear");
+            }
+        }
+        #endregion
 
+        public Grid CalenderGrid;
+
+        #region 月選択
+        int _SelectedMonth { get; set; }
+        public int SelectedMonth {
+            get
+            {
+                return _SelectedMonth;
+            }
+            set
+            {
+                _SelectedMonth = value;
+                RaisePropertyChanged("SelectedMonth");
+
+                MakeCalender(CalenderGrid, SelectedYear, _SelectedMonth, new Func<List<DateData>, DateTime, List<DateData>>((x, jikanwari) =>
+                {
+                    Control.DayEditWindow window = new Control.DayEditWindow();
+                    window.DayEditWindowData.DateDatas = x;
+                    window.DayEditWindowData.Jikanwari = jikanwari;
+                    window.ShowDialog();
+                    return window.DayEditWindowData.DateDatas;
+                }));
+            }
+        }
+        #endregion
+
+        #region 月のCombobox
+        public ObservableCollection<int> MonthItems
+        {
+            get
+            {
+                ObservableCollection<int> rets = new ObservableCollection<int>();
+
+                rets.Add(4);
+                rets.Add(5);
+                rets.Add(6);
+                rets.Add(7);
+                rets.Add(8);
+                rets.Add(9);
+                rets.Add(10);
+                rets.Add(11);
+                rets.Add(12);
+                rets.Add(1);
+                rets.Add(2);
+                rets.Add(3);
+
+                return rets;
+
+            }
+        }
+        #endregion
 
         MS_GAKUNEN _SelectedMsGakunen { get; set; }
         public MS_GAKUNEN SelectedMsGakunen
@@ -56,9 +121,6 @@ namespace JisuCounter
         {
             MsKyoukas = new ObservableCollection<JisuCounterData.MS_KYOUKA>();
             MsGakunen = new ObservableCollection<MS_GAKUNEN>();
-
-            SelectedYear = 2017;
-            SelectedMonth = 4;
 
         }
 
@@ -97,7 +159,7 @@ namespace JisuCounter
             SelectedMsGakunen = MsGakunen[0];
         }
 
-        void LoadDateData(int year,int month)
+        void LoadDateData(int year)
         {
             DateDataController DateDataController = new DateDataController();
 
@@ -108,9 +170,11 @@ namespace JisuCounter
         }
 
 
-        public void MakeCalender(Grid CalenderGrid,int year, int month ,Func<List<JisuCounterData.DateData>,DateTime, JisuCounterData.DateData> ClickAction)
+        public void MakeCalender(Grid CalenderGrid,int year, int month ,Func<List<DateData>,DateTime, List<DateData>> ClickAction)
         {
-            LoadDateData(year, month);
+
+            CalenderGrid.Children.Clear();
+            m_DayControls.Clear();
 
             DateTime ThisMonth = new DateTime(year, month, 1);
 
@@ -125,13 +189,16 @@ namespace JisuCounter
                 DateTime date = new DateTime(ThisMonth.Year, ThisMonth.Month, i);
 
                 dayControl.DayControlData.Add(m_DateDatas.Where(x => x.JIKANWARI.ToString("yyyyMMdd") == ThisMonth.Year.ToString() + ThisMonth.Month.ToString("D2") + i.ToString("D2")));
-                dayControl.ClickAction = new Action<List<JisuCounterData.DateData>>(x =>
+                dayControl.ClickAction = new Action<List<DateData>>(x =>
                 {
-                    var EditData = ClickAction(x, date);
-                    var a = m_DateDatas.Where(d => d.JIKANWARI == EditData.JIKANWARI).FirstOrDefault();
-                    if (a == null)
+                    var EditDatas = ClickAction(x, date);
+                    foreach (var EditData in EditDatas)
                     {
-                        m_DateDatas.Add(EditData);
+                        var a = m_DateDatas.Where(d => d.JIKANWARI == EditData.JIKANWARI && d.KOMA == EditData.KOMA).FirstOrDefault();
+                        if (a == null)
+                        {
+                            m_DateDatas.Add(EditData);
+                        }
                     }
                     ///編集した1日データを更新
                     dayControl.Refresh();
@@ -154,6 +221,10 @@ namespace JisuCounter
                     Row++;
                 }
             }
+            ///月合計を更新
+            MakeMonthSum();
+            ///年合計を更新
+            MakeYearSum();
         }
 
         #region 月合計
@@ -334,19 +405,23 @@ namespace JisuCounter
                 if (jisu != null)
                 {
                     control.JisuLabel.Content = jisu.JISU;
-                }
-            }
 
-            foreach (var data in datas)
-            {
-                var targetLabels = YearSumLabels.Where(x => (string)x.label.Content == data.Key).FirstOrDefault();
-                if (targetLabels != null)
-                {
-                    targetLabels.SumLabel.Content = data.Value;
-                }
-                else
-                {
-                    targetLabels.SumLabel.Content = 0;
+                    if (datas.ContainsKey((string)control.label.Content))
+                    {
+                        var 年時数 = datas[(string)control.label.Content];
+                        if (jisu.JISU > 年時数)
+                        {
+                            control.SumLabel.Foreground = new SolidColorBrush(Colors.Red);
+                        }
+                        control.SumLabel.Content = 年時数;
+                    }
+                    else
+                    {
+                        if (jisu.JISU > 0)
+                        {
+                            control.SumLabel.Foreground = new SolidColorBrush(Colors.Red);
+                        }
+                    }
                 }
             }
 
