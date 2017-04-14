@@ -78,6 +78,22 @@ namespace JisuCounter
                 }));
             }
         }
+
+        internal void BulkUpdate(List<MS_WEEK> msWeeks)
+        {
+            ///一括設定
+            DateDataUpdateLogic logic = new DateDataUpdateLogic();
+            m_DateDatas = logic.Update(msWeeks, 2017, SelectedMsGakunen.MS_GAKUNEN_ID);
+
+            MakeCalender(CalenderGrid, SelectedYear, _SelectedMonth, new Func<List<DateData>, DateTime, List<DateData>>((x, jikanwari) =>
+            {
+                Control.DayEditWindow window = new Control.DayEditWindow();
+                window.DayEditWindowData.DateDatas = x;
+                window.DayEditWindowData.Jikanwari = jikanwari;
+                window.ShowDialog();
+                return window.DayEditWindowData.DateDatas;
+            }));
+        }
         #endregion
 
         #region 月のCombobox

@@ -48,9 +48,9 @@ order by JIKANWARI,KOMA
             return retDatas;
         }
 
-        public Dictionary<string,double>Get月時数(List<DateData> dateData,int Year,int Month)
+        public Dictionary<string,float>Get月時数(List<DateData> dateData,int Year,int Month)
         {
-            Dictionary<string, double> retDatas = new Dictionary<string, double>();
+            Dictionary<string, float> retDatas = new Dictionary<string, float>();
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{0}{1}", Year, Month.ToString("d2"));
 
@@ -59,7 +59,7 @@ order by JIKANWARI,KOMA
                 KYOUKA_NAME = j.KYOUKA_NAME,
                 RATIO = j.KYOUKA_RATIO
             });
-            var groupDatas = joinDatas.GroupBy(x => x.KYOUKA_NAME).Select(a => new { KYOUKA_NAME = a.Key, Sum = a.Sum(x => x.RATIO) });
+            var groupDatas = joinDatas.GroupBy(x => x.KYOUKA_NAME).Select(a => new { KYOUKA_NAME = a.Key, Sum = (float)((int)(a.Sum(x => x.RATIO) * ROUND ) / ROUND) });
 
             foreach(var d in groupDatas)
             {
@@ -68,9 +68,9 @@ order by JIKANWARI,KOMA
             return retDatas;
         }
 
-        public Dictionary<string, double> Get年時数(List<DateData> dateData)
+        public Dictionary<string, float> Get年時数(List<DateData> dateData)
         {
-            Dictionary<string, double> retDatas = new Dictionary<string, double>();
+            Dictionary<string, float> retDatas = new Dictionary<string, float>();
 
             var joinDatas = dateData.Join(MS_KYOUKA_CACHE.GetAll(), x => x.MS_KYOUKA_ID, j => j.MS_KYOUKA_ID, (x, j) => new
             {
@@ -81,12 +81,13 @@ order by JIKANWARI,KOMA
 
             foreach (var d in groupDatas)
             {
-                retDatas.Add(d.KYOUKA_NAME, d.Sum);
+                float aa = (float)((int)(d.Sum * ROUND)) / ROUND;
+                retDatas.Add(d.KYOUKA_NAME, aa);
             }
             return retDatas;
         }
 
-        double ROUND = 10.0;
+        float ROUND = 10;
 
         public double 月合計(List<DateData> dateData, int Year, int Month)
         {
@@ -99,7 +100,8 @@ order by JIKANWARI,KOMA
                 RATIO = j.KYOUKA_RATIO
             });
 
-            return (int)(joinDatas.Sum(x => x.RATIO) * ROUND) / ROUND;
+            double aa = (double)((int)(joinDatas.Sum(x => x.RATIO) * ROUND)) / ROUND;
+            return aa;
         }
 
         public void Save(List<DateData> dateDatas, MS_GAKUNEN Gakunen, int Year)

@@ -21,6 +21,7 @@
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="150"/>
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="学年" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                 <ComboBox ItemsSource="{Binding MsGakunen}" DisplayMemberPath="GAKUNEN_NAME" SelectedItem="{Binding SelectedMsGakunen}" Grid.Column="1" Height="30" VerticalAlignment="Center"/>
@@ -31,7 +32,8 @@
                 <ComboBox Grid.Column="5" Height="30" ItemsSource="{Binding MonthItems}" SelectedItem="{Binding SelectedMonth}" VerticalAlignment="Center"/>
 
                 <Button Grid.Column="6" x:Name="UpdateButton" Width="60" VerticalAlignment="Center" Content="更新" Click="UpdateButton_Click"/>
-                
+
+                <Button Grid.Column="7" x:Name="WeekWindowButton" Content="一括設定" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" Click="WeekWindowButton_Click" Margin="10"/>
             </Grid>
         </Grid>
         <Grid  Grid.Row="1">

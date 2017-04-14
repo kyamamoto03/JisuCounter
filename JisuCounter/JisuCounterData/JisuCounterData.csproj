@@ -69,6 +69,7 @@
     <Compile Include="Attribute.cs" />
     <Compile Include="DateData.cs" />
     <Compile Include="DateDataController.cs" />
+    <Compile Include="DateDataUpdateLogic.cs" />
     <Compile Include="DBConnect.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="MS_GAKUNEN_Controller.cs" />
@@ -77,6 +78,8 @@
     <Compile Include="MS_JISU_Controller.cs" />
     <Compile Include="MS_KYOUKA.cs" />
     <Compile Include="MS_KYOUKA_Controller.cs" />
+    <Compile Include="MS_WEEK.cs" />
+    <Compile Include="MS_WEEK_Controller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

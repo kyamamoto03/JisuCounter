@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\kohji\Source\Repos\JisuCounter\JisuCounter\JisuCounter\obj\Debug\
+C:\Users\k.yamamoto03\Source\Repos\JisuCounter\JisuCounter\JisuCounter\obj\Debug\
 JisuCounter
 none
 false
 DEBUG;TRACE
-C:\Users\kohji\Source\Repos\JisuCounter\JisuCounter\JisuCounter\App.xaml
-315802299
+C:\Users\k.yamamoto03\Source\Repos\JisuCounter\JisuCounter\JisuCounter\App.xaml
+6-2107989167
 258816407
-10-1070388330
-66-1159694426
-Control\DayControl.xaml;Control\DayEditWindow.xaml;MainWindow.xaml;
+16-1552477213
+66-532366899
+Control\DayControl.xaml;Control\DayEditWindow.xaml;MainWindow.xaml;WeekWindow\WeekDayControl.xaml;WeekWindow\WeekDayEditWindow.xaml;WeekWindow\WeekWindow.xaml;
 
 False
 

@@ -62,6 +62,10 @@ namespace JisuCounterData
                         {
                             putClass.InvokeMember(ColumName, System.Reflection.BindingFlags.SetProperty, null, data, new object[] { dr.GetDouble(index) });
                         }
+                        else if (propertyInfo.PropertyType == typeof(float))
+                        {
+                            putClass.InvokeMember(ColumName, System.Reflection.BindingFlags.SetProperty, null, data, new object[] { dr.GetFloat(index) });
+                        }
                     }
                 }
             }

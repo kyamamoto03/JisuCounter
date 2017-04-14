@@ -25,7 +25,6 @@ namespace JisuCounter.Control
         #endregion
 
         public DateTime Jikanwari;
-        public DateData TargetDateData;
 
         public List<DateData> DateDatas;
 
@@ -149,7 +148,6 @@ namespace JisuCounter.Control
                 data.JIKANWARI = Jikanwari;
                 DateDatas.Add(data);
             }
-            TargetDateData = data;
             data.MS_KYOUKA_ID = value.MS_KYOUKA_ID;
 
         }

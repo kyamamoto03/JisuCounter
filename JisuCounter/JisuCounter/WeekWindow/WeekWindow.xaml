@@ -1,0 +1,28 @@
+﻿<Window xmlns:Control="clr-namespace:JisuCounter.Control"  x:Class="JisuCounter.WeekWindow.WeekWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JisuCounter.WeekWindow"
+        mc:Ignorable="d"
+        Title="WeekWindow" Height="220" Width="932">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <Label Content="１週間のデータをすべてに適応します" Grid.Row="0"/>
+        <StackPanel x:Name="DayControlStackPanel" Grid.Row="1" Orientation="Horizontal">
+
+        </StackPanel>
+        <Grid Grid.Row="2" HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="UpdateButton" Content="適用する" Width="100" Height="30" Grid.Column="0" Click="UpdateButton_Click"/>
+            <Button x:Name="CloseButton" Content="閉じる" Width="100" Height="30" Grid.Column="1" Click="CloseButton_Click"/>
+        </Grid>
+    </Grid>
+</Window>

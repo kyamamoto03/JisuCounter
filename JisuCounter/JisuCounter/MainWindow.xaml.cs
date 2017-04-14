@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using JisuCounterData;
 
 namespace JisuCounter
 {
@@ -51,6 +52,22 @@ namespace JisuCounter
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             mainWindowData.Save();
+        }
+
+        /// <summary>
+        /// 一括設定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void WeekWindowButton_Click(object sender, RoutedEventArgs e)
+        {
+            WeekWindow.WeekWindow weekWindow = new WeekWindow.WeekWindow();
+
+            if (weekWindow.ShowDialog() == true)
+            {
+                mainWindowData.BulkUpdate(weekWindow.weekWindowData.MsWeeks);
+            }
+
         }
     }
 }
