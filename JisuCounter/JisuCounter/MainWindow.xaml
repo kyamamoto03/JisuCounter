@@ -53,12 +53,12 @@
                     <ColumnDefinition Width="180"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="95"/>
-                    <RowDefinition Height="95"/>
-                    <RowDefinition Height="95"/>
-                    <RowDefinition Height="95"/>
-                    <RowDefinition Height="95"/>
-                    <RowDefinition Height="95"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="70"/>
                 </Grid.RowDefinitions>
             </Grid>
             <Grid Grid.Row="1">
