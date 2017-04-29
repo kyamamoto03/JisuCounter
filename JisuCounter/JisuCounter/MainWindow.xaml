@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JisuCounter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="673.214" Width="1258.357" Loaded="Window_Loaded">
+        Title="MainWindow" Height="673.214" Width="1478.396" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -37,19 +37,20 @@
             </Grid>
         </Grid>
         <Grid  Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="250"/>
-            </Grid.ColumnDefinitions>
-            <Grid x:Name="CalenderGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="150"/>
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="0" x:Name="CalenderGrid">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="130"/>
-                    <ColumnDefinition Width="130"/>
-                    <ColumnDefinition Width="130"/>
-                    <ColumnDefinition Width="130"/>
-                    <ColumnDefinition Width="130"/>
-                    <ColumnDefinition Width="130"/>
-                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="180"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="95"/>
@@ -60,14 +61,14 @@
                     <RowDefinition Height="95"/>
                 </Grid.RowDefinitions>
             </Grid>
-            <Grid Grid.Column="1">
-                <StackPanel Orientation="Horizontal">
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Vertical">
 
                     <GroupBox Header="月合計" BorderThickness="2" >
-                        <StackPanel x:Name="MonthSum" Orientation="Vertical"/>
+                        <StackPanel x:Name="MonthSum" Orientation="Horizontal"/>
                     </GroupBox>
                     <GroupBox Header="年合計">
-                        <StackPanel x:Name="YearSum" Orientation="Vertical"/>
+                        <StackPanel x:Name="YearSum" Orientation="Horizontal"/>
                     </GroupBox>
                 </StackPanel>
             </Grid>
