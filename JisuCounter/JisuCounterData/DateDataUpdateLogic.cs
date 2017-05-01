@@ -11,12 +11,25 @@ namespace JisuCounterData
     /// </summary>
     public class DateDataUpdateLogic
     {
-        public List<DateData> Update(List<MS_WEEK>MsWeeks,int Year,int MsGakunenID)
+        public void Update(List<DateData> DateDatas,List<MS_WEEK>MsWeeks,int Year,int Month,int MsGakunenID)
         {
-            List<DateData> ret = new List<DateData>();
 
-            DateTime TargetDate = new DateTime(Year, 4, 1);
-            DateTime FinishDate = TargetDate.AddYears(1);
+            int TargetYear = Year;
+            if (Month < 4)
+            {
+                TargetYear--;
+            }
+            DateTime TargetDate = new DateTime(TargetYear, Month, 1);
+            DateTime FinishDate = new DateTime(TargetYear, Month, DateTime.DaysInMonth(Year, Month));
+
+            //ターゲットのデータを削除する
+            DateDatas.RemoveAll(x =>
+            {
+                if (x.MS_GAKUNEN_ID == MsGakunenID && x.JIKANWARI >= TargetDate && x.JIKANWARI <= FinishDate)
+                    return true;
+                else
+                    return false;
+            });
 
             while (TargetDate < FinishDate)
             {
@@ -28,12 +41,11 @@ namespace JisuCounterData
                     foreach (var YoubiData in YoubiDatas)
                     {
                         DateData dateData = new DateData { JIKANWARI = TargetDate, KOMA = YoubiData.KOMA, MS_KYOUKA_ID = YoubiData.MS_KYOUKA_ID, MS_GAKUNEN_ID = MsGakunenID };
-                        ret.Add(dateData);
+                        DateDatas.Add(dateData);
                     }
                 }
                 TargetDate = TargetDate.AddDays(1);
             }
-            return ret;
         }
     }
 }

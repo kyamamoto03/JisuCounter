@@ -27,7 +27,23 @@ namespace JisuCounter.Control
         public DateTime Jikanwari;
 
         public List<DateData> DateDatas;
+        public List<DateData> SaveDatas;
 
+
+        public int MS_GAKUNEN_ID { get; set; }
+
+        public void Init()
+        {
+            SaveDatas = new List<DateData>();
+            if (DateDatas != null)
+            {
+                DateDatas.ForEach(x => SaveDatas.Add(x));
+            }
+            else
+            {
+                DateDatas = new List<DateData>();
+            }
+        }
         ObservableCollection<MS_KYOUKA> _KyoukaMaster = new ObservableCollection<MS_KYOUKA>();
         public ObservableCollection<MS_KYOUKA>KyoukaMaster
         {
@@ -75,7 +91,7 @@ namespace JisuCounter.Control
             {
                 int SearchKoma = 2;
                 SetKoma(value, SearchKoma);
-                RaisePropertyChanged("Koma1");
+                RaisePropertyChanged("Koma2");
             }
         }
 
@@ -90,7 +106,7 @@ namespace JisuCounter.Control
             {
                 int SearchKoma = 3;
                 SetKoma(value, SearchKoma);
-                RaisePropertyChanged("Koma1");
+                RaisePropertyChanged("Koma3");
             }
         }
 
@@ -105,7 +121,7 @@ namespace JisuCounter.Control
             {
                 int SearchKoma = 4;
                 SetKoma(value, SearchKoma);
-                RaisePropertyChanged("Koma1");
+                RaisePropertyChanged("Koma4");
             }
         }
 
@@ -120,7 +136,7 @@ namespace JisuCounter.Control
             {
                 int SearchKoma = 5;
                 SetKoma(value, SearchKoma);
-                RaisePropertyChanged("Koma1");
+                RaisePropertyChanged("Koma5");
             }
         }
         public MS_KYOUKA Koma6
@@ -134,7 +150,35 @@ namespace JisuCounter.Control
             {
                 int SearchKoma = 6;
                 SetKoma(value, SearchKoma);
-                RaisePropertyChanged("Koma1");
+                RaisePropertyChanged("Koma6");
+            }
+        }
+        public MS_KYOUKA Koma7
+        {
+            get
+            {
+                int SearchKoma = 7;
+                return GetKoma(SearchKoma);
+            }
+            set
+            {
+                int SearchKoma = 7;
+                SetKoma(value, SearchKoma);
+                RaisePropertyChanged("Koma7");
+            }
+        }
+        public MS_KYOUKA Koma8
+        {
+            get
+            {
+                int SearchKoma = 8;
+                return GetKoma(SearchKoma);
+            }
+            set
+            {
+                int SearchKoma = 8;
+                SetKoma(value, SearchKoma);
+                RaisePropertyChanged("Koma8");
             }
         }
 
@@ -146,10 +190,11 @@ namespace JisuCounter.Control
                 data = new DateData();
                 data.KOMA = SearchKoma;
                 data.JIKANWARI = Jikanwari;
+                data.MS_GAKUNEN_ID = MS_GAKUNEN_ID;
                 DateDatas.Add(data);
             }
             data.MS_KYOUKA_ID = value.MS_KYOUKA_ID;
-
+            
         }
 
         private MS_KYOUKA GetKoma(int SearchKoma)
@@ -159,6 +204,15 @@ namespace JisuCounter.Control
                 return null;
 
             return MS_KYOUKA_CACHE.Get(data.MS_KYOUKA_ID);
+        }
+
+        /// <summary>
+        /// 追加した
+        /// </summary>
+        public void RollBack()
+        {
+            DateDatas.Clear();
+            SaveDatas.ForEach(x => DateDatas.Add(x));
         }
     }
 }

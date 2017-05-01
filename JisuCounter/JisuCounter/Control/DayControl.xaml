@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:JisuCounter.Control"
-             mc:Ignorable="d" Height="70" Width="180">
+             mc:Ignorable="d" Height="70" Width="170">
     <UserControl.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF7AA8FB" Offset="1"/>
@@ -19,7 +19,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Label Content="{Binding Day}" ContentStringFormat="{}{0:dd(ddd)}"  Grid.Row="0" Margin="0,-3"/>
-            <Grid Grid.Row="1"  >
+            <Grid Grid.Row="1" Width="165" Height="45" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -30,35 +30,35 @@
                     <RowDefinition/>
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Border Background="{Binding Koma1_Foreground}" Grid.Row="0" Grid.Column="0" Margin="2,-3">
+                <Border Background="{Binding Koma1_Foreground}" Grid.Row="0" Grid.Column="0" Margin="0,0,0,0">
                     <Label Content="{Binding KOMA1}"  FontSize="9" Margin="-4,-1" Foreground="Black"/>
                 </Border>
 
-                <Border Background="{Binding Koma2_Foreground}" Grid.Row="0" Grid.Column="1" Margin="2,-3">
+                <Border Background="{Binding Koma2_Foreground}" Grid.Row="0" Grid.Column="1" Margin="0,0,0,0">
                     <Label Content="{Binding KOMA2}" FontSize="9" Margin="-4,-1" Foreground="Black"/>
                 </Border>
-                
-                <Border Background="{Binding Koma3_Foreground}" Grid.Row="0" Grid.Column="2" Margin="2,-3">
+
+                <Border Background="{Binding Koma3_Foreground}" Grid.Row="0" Grid.Column="2" Margin="0,0,0,0">
                     <Label Content="{Binding KOMA3}" FontSize="9" Margin="-4,-1" Foreground="Black"/>
                 </Border>
 
-                <Border Background="{Binding Koma4_Foreground}" Grid.Row="0" Grid.Column="3" Margin="2,-3">
+                <Border Background="{Binding Koma4_Foreground}" Grid.Row="0" Grid.Column="3" Margin="0,0,0,0">
                     <Label Content="{Binding KOMA4}" FontSize="9" Margin="-4,-1" Foreground="Black"/>
                 </Border>
                 
-                <Border Background="{Binding Koma5_Foreground}" Grid.Row="1" Grid.Column="0" Margin="2,-3,0,2">
+                <Border Background="{Binding Koma5_Foreground}" Grid.Row="1" Grid.Column="0" Margin="0,0,0,0">
                     <Label Content="{Binding KOMA5}" FontSize="9" Margin="-2,-3" Foreground="Black"/>
                 </Border>
 
-                <Border Background="{Binding Koma6_Foreground}" Grid.Row="1" Grid.Column="1" Margin="2,-3,0,2">
+                <Border Background="{Binding Koma6_Foreground}" Grid.Row="1" Grid.Column="1" Margin="0,0,0,0">
                     <Label Content="{Binding KOMA6}" FontSize="9" Margin="-2,-3" Foreground="Black"/>
                 </Border>
 
-                <Border Background="{Binding Koma7_Foreground}" Grid.Row="1" Grid.Column="2" Margin="2,-3,0,2">
+                <Border Background="{Binding Koma7_Foreground}" Grid.Row="1" Grid.Column="2" Margin="0,0,0,0">
                     <Label Content="{Binding KOMA7}" FontSize="9" Margin="-2,-3" Foreground="Black"/>
                 </Border>
 
-                <Border Background="{Binding Koma8_Foreground}" Grid.Row="1" Grid.Column="3" Margin="2,-3,0,2">
+                <Border Background="{Binding Koma8_Foreground}" Grid.Row="1" Grid.Column="3" Margin="0,0,0,0">
                     <Label Content="{Binding KOMA8}" FontSize="9" Margin="-2,-3" Foreground="Black"/>
                 </Border>
 

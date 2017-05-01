@@ -26,14 +26,17 @@ namespace JisuCounter
          public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
             mainWindowData = new MainWindowData();
             mainWindowData.DBOpen();
 
             mainWindowData.LoadMaster();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            mainWindowData.LoadData();
+
+
             DataContext = mainWindowData;
 
             mainWindowData.MakeMonthSumBase(MonthSum);

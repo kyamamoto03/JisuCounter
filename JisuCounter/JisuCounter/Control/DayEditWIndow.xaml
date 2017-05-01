@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JisuCounter.Control"
         mc:Ignorable="d"
-        Title="DayEditWIndow" Height="300" Width="300">
+        Title="DayEditWIndow" Height="300" Width="300" Loaded="Window_Loaded">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
                 <RowDefinition/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             <Label Content="{Binding Day}" ContentStringFormat="{}{0:dd(ddd)}"  Grid.Row="0" Margin="0,-3"/>
             <Grid Grid.Row="1" >
@@ -43,6 +44,14 @@
                 <ComboBox ItemsSource="{Binding KyoukaMaster}" SelectedItem="{Binding Koma7}" Grid.Row="3" Grid.Column="2"/>
                 <Label Content="8" Grid.Row ="2" Grid.Column="3" FontSize="8"/>
                 <ComboBox ItemsSource="{Binding KyoukaMaster}" SelectedItem="{Binding Koma8}" Grid.Row="3" Grid.Column="3"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="OKButton" Content="設定" Grid.Column="0" Width="60" Height="20" Click="OKButton_Click"/>
+                <Button x:Name="CancelButton" Content="キャンセル" Grid.Column="1"  Width="60" Height="20" Click="CancelButton_Click"/>
             </Grid>
         </Grid>
 

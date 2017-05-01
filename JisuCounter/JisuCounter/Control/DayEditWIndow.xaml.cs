@@ -27,5 +27,23 @@ namespace JisuCounter.Control
             DayEditWindowData.LoadKyoukaMaster();
             DataContext = DayEditWindowData;
         }
+
+        private void OKButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            Close();
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            DayEditWindowData.RollBack();
+            DialogResult = false;
+            Close();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            DayEditWindowData.Init();
+        }
     }
 }

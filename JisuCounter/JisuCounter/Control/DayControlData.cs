@@ -26,6 +26,8 @@ namespace JisuCounter.Control
 
         string DEFALUT_COLOR = "Transparent";
 
+        public string TargetDate;
+
         public DayControlData()
         {
             _DateDates = new List<DateData>();

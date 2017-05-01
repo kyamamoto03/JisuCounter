@@ -108,7 +108,7 @@ order by JIKANWARI,KOMA
         {
             using (SQLiteTransaction trans = DBConnect.GetConnection().BeginTransaction())
             {
-                DeleteYearMonth(Gakunen, Year);
+                int cnt = DeleteYearMonth(Gakunen, Year);
 
                 foreach(var d in dateDatas)
                 {
@@ -146,7 +146,7 @@ values(
             }
 
         }
-        private void DeleteYearMonth(MS_GAKUNEN Gakunen, int Year)
+        private int DeleteYearMonth(MS_GAKUNEN Gakunen, int Year)
         {
             #region SQL 
             string SQL = @"
@@ -157,6 +157,8 @@ and strftime('%Y-%m', JIKANWARI) >= :NENDO_START and strftime('%Y-%m', JIKANWARI
 
 ";
             #endregion
+
+            int cnt = 0;
             using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
             {
                 var 年度 = Get年度(Year);
@@ -165,8 +167,9 @@ and strftime('%Y-%m', JIKANWARI) >= :NENDO_START and strftime('%Y-%m', JIKANWARI
                 command.Parameters.AddWithValue(":NENDO_START", 年度.NendoStart);
                 command.Parameters.AddWithValue(":NENDO_END", 年度.NendoEnd);
 
-                command.ExecuteNonQuery();
+                cnt = command.ExecuteNonQuery();
             }
+            return cnt;
         }
         (string NendoStart,string NendoEnd)Get年度(int Year)
         {

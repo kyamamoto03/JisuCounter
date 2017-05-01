@@ -37,6 +37,7 @@ namespace JisuCounter
 
         Color FORE_COLOR = Colors.White;
 
+        bool IsModify = false;
         #region 年度選択
         int _SelectedYear { get; set; }
         public int SelectedYear
@@ -68,31 +69,36 @@ namespace JisuCounter
                 _SelectedMonth = value;
                 RaisePropertyChanged("SelectedMonth");
 
+                Refresh();
+            }
+        }
+        private void Refresh()
+        {
+            if (CalenderGrid != null)
+            {
                 MakeCalender(CalenderGrid, SelectedYear, _SelectedMonth, new Func<List<DateData>, DateTime, List<DateData>>((x, jikanwari) =>
                 {
                     Control.DayEditWindow window = new Control.DayEditWindow();
+                    window.DayEditWindowData.MS_GAKUNEN_ID = SelectedMsGakunen.MS_GAKUNEN_ID;
                     window.DayEditWindowData.DateDatas = x;
                     window.DayEditWindowData.Jikanwari = jikanwari;
-                    window.ShowDialog();
-                    return window.DayEditWindowData.DateDatas;
+                    if (window.ShowDialog() == true)
+                    {
+                        IsModify = true;
+                        return window.DayEditWindowData.DateDatas;
+
+                    }
+                    return null;
                 }));
             }
         }
-
         internal void BulkUpdate(List<MS_WEEK> msWeeks)
         {
             ///一括設定
             DateDataUpdateLogic logic = new DateDataUpdateLogic();
-            m_DateDatas = logic.Update(msWeeks, 2017, SelectedMsGakunen.MS_GAKUNEN_ID);
+            logic.Update(m_DateDatas,msWeeks, SelectedYear, SelectedMonth, SelectedMsGakunen.MS_GAKUNEN_ID);
 
-            MakeCalender(CalenderGrid, SelectedYear, _SelectedMonth, new Func<List<DateData>, DateTime, List<DateData>>((x, jikanwari) =>
-            {
-                Control.DayEditWindow window = new Control.DayEditWindow();
-                window.DayEditWindowData.DateDatas = x;
-                window.DayEditWindowData.Jikanwari = jikanwari;
-                window.ShowDialog();
-                return window.DayEditWindowData.DateDatas;
-            }));
+            Refresh();
         }
         #endregion
 
@@ -128,7 +134,18 @@ namespace JisuCounter
             get { return _SelectedMsGakunen; }
             set
             {
+                if (IsModify == true)
+                {
+                    if (System.Windows.MessageBox.Show("データが変更されています。保存しますか？", "保存", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question) == System.Windows.MessageBoxResult.Yes)
+                    {
+                        Save();
+                    }
+                }
+                IsModify = false;
                 _SelectedMsGakunen = value;
+                LoadDateData(SelectedYear);
+
+
                 RaisePropertyChanged("SelectedMsGakunen");
             }
         }
@@ -144,12 +161,18 @@ namespace JisuCounter
         {
             DBConnect.GetInstance().Open(@"Data Source=JisuCounter.sqlite3");
             MS_KYOUKA_CACHE.CacheFill();
+            
 
         }
 
         void IDisposable.Dispose()
         {
             DBConnect.GetInstance().Dispose();
+        }
+
+        public void LoadData()
+        {
+            SelectedYear = 2017;
         }
 
         public void LoadMaster()
@@ -177,12 +200,15 @@ namespace JisuCounter
 
         void LoadDateData(int year)
         {
+
             DateDataController DateDataController = new DateDataController();
 
             m_DateDatas = DateDataController.Get(SelectedMsGakunen.MS_GAKUNEN_ID, year);
 
             MS_JISU_Controller MsJisuController = new MS_JISU_Controller();
             m_Jisus = MsJisuController.GetAt(SelectedMsGakunen);
+
+            Refresh();
         }
 
 
@@ -192,57 +218,72 @@ namespace JisuCounter
             CalenderGrid.Children.Clear();
             m_DayControls.Clear();
 
-            DateTime ThisMonth = new DateTime(year, month, 1);
-
-            int YoubiIndex = (int)ThisMonth.DayOfWeek;
-            int Row = 0;
-            int Col = YoubiIndex;
-            for (int i = 1; i <= DateTime.DaysInMonth(ThisMonth.Year, ThisMonth.Month); i++)
+            if (month < 4)
             {
-                DayControl dayControl = new DayControl();
-                dayControl.SetValue(Grid.RowProperty, Row);
-                dayControl.SetValue(Grid.ColumnProperty, Col++);
-                DateTime date = new DateTime(ThisMonth.Year, ThisMonth.Month, i);
-
-                dayControl.DayControlData.Add(m_DateDatas.Where(x => x.JIKANWARI.ToString("yyyyMMdd") == ThisMonth.Year.ToString() + ThisMonth.Month.ToString("D2") + i.ToString("D2")));
-                dayControl.ClickAction = new Action<List<DateData>>(x =>
-                {
-                    var EditDatas = ClickAction(x, date);
-                    foreach (var EditData in EditDatas)
-                    {
-                        var a = m_DateDatas.Where(d => d.JIKANWARI == EditData.JIKANWARI && d.KOMA == EditData.KOMA).FirstOrDefault();
-                        if (a == null)
-                        {
-                            m_DateDatas.Add(EditData);
-                        }
-                    }
-                    ///編集した1日データを更新
-                    dayControl.Refresh();
-                    ///月合計を更新
-                    MakeMonthSum();
-                    ///年合計を更新
-                    MakeYearSum();
-                });
-
-
-                CalenderGrid.Children.Add(dayControl);
-
-                dayControl.DayControlData.Day = new DateTime(ThisMonth.Year, ThisMonth.Month, i);
-
-                m_DayControls.Add(dayControl);
-
-                if (Col > 6)
-                {
-                    Col = 0;
-                    Row++;
-                }
+                year++;
             }
-            ///月合計を更新
-            MakeMonthSum();
-            ///年合計を更新
-            MakeYearSum();
+            try
+            {
+                DateTime ThisMonth = new DateTime(year, month, 1);
+
+                int YoubiIndex = (int)ThisMonth.DayOfWeek;
+                int Row = 0;
+                int Col = YoubiIndex;
+                for (int i = 1; i <= DateTime.DaysInMonth(ThisMonth.Year, ThisMonth.Month); i++)
+                {
+                    DayControl dayControl = new DayControl();
+                    dayControl.SetValue(Grid.RowProperty, Row);
+                    dayControl.SetValue(Grid.ColumnProperty, Col++);
+                    DateTime date = new DateTime(ThisMonth.Year, ThisMonth.Month, i);
+
+                    dayControl.DayControlData.Add(m_DateDatas.Where(x => x.JIKANWARI.ToString("yyyyMMdd") == ThisMonth.Year.ToString() + ThisMonth.Month.ToString("D2") + i.ToString("D2")));
+                    dayControl.ClickAction = new Action<List<DateData>>(x =>
+                    {
+                        var EditDatas = ClickAction(x, date);
+                        if (EditDatas != null)
+                        {
+                            foreach (var EditData in EditDatas)
+                            {
+                                var a = m_DateDatas.Where(d => d.JIKANWARI == EditData.JIKANWARI && d.KOMA == EditData.KOMA).FirstOrDefault();
+                                if (a == null)
+                                {
+                                    m_DateDatas.Add(EditData);
+                                }
+                            }
+                            ///編集した1日データを更新
+                            dayControl.Refresh();
+                            ///月合計を更新
+                            MakeMonthSum();
+                            ///年合計を更新
+                            MakeYearSum();
+                        }
+                    });
+
+
+                    CalenderGrid.Children.Add(dayControl);
+
+                    dayControl.DayControlData.Day = new DateTime(ThisMonth.Year, ThisMonth.Month, i);
+
+                    m_DayControls.Add(dayControl);
+
+                    if (Col > 6)
+                    {
+                        Col = 0;
+                        Row++;
+                    }
+                }
+                ///月合計を更新
+                MakeMonthSum();
+                ///年合計を更新
+                MakeYearSum();
+            }
+            catch { }
         }
 
+        /// <summary>
+        /// 合計字数の幅
+        /// </summary>
+        double JISU_WIDTH = 40d;
         #region 月合計
         List<MonthSumLabel> MonthSumLabels = new List<MonthSumLabel>();
 
@@ -258,7 +299,7 @@ namespace JisuCounter
         /// </summary>
         MonthSumLabel MonthlySum;
 
-        public void MakeMonthSumBase(StackPanel MonthSum)
+        public void MakeMonthSumBase(Panel MonthSum)
         {
             MS_KYOUKA_Controller MsKyoukaController = new MS_KYOUKA_Controller();
             //MonthSum
@@ -297,6 +338,7 @@ namespace JisuCounter
             Label SumLabel = new Label();
             SumLabel.SetValue(Grid.ColumnProperty, 1);
             SumLabel.Content = "0";
+            SumLabel.Width = JISU_WIDTH;
             grid.Children.Add(SumLabel);
 
             MonthSumLabel sumLabels = new MonthSumLabel { label = label, SumLabel = SumLabel };
@@ -304,7 +346,8 @@ namespace JisuCounter
             
 
         }
- 
+
+
         /// <summary>
         /// 次ごとの教科別時数合計
         /// </summary>
@@ -350,7 +393,7 @@ namespace JisuCounter
         }
         List<YearSumLabel> YearSumLabels = new List<YearSumLabel>();
 
-        public void MakeYearSumBase(StackPanel YearSum)
+        public void MakeYearSumBase(Panel YearSum)
         {
             MS_KYOUKA_Controller MsKyoukaController = new MS_KYOUKA_Controller();
             
@@ -391,11 +434,13 @@ namespace JisuCounter
             Label JisuLabel = new Label();
             JisuLabel.SetValue(Grid.ColumnProperty, 1);
             JisuLabel.Content = "0";
+            JisuLabel.Width = JISU_WIDTH;
             grid.Children.Add(JisuLabel);
 
             Label SumLabel = new Label();
             SumLabel.SetValue(Grid.ColumnProperty, 2);
             SumLabel.Content = "0";
+            SumLabel.Width = JISU_WIDTH;
             grid.Children.Add(SumLabel);
 
 
