@@ -10,7 +10,13 @@ namespace JisuCounterData
     {
         public override string ToString()
         {
-            return KYOUKA_NAME + " " + KYOUKA_RATIO;
+            if (MS_KYOUKA_ID > 0)
+            {
+                return KYOUKA_NAME + " " + KYOUKA_RATIO;
+            }else
+            {
+                return KYOUKA_NAME;
+            }
         }
 
         public int MS_KYOUKA_ID { get; set; }
@@ -33,6 +39,7 @@ namespace JisuCounterData
         {
             MS_KYOUKA_Controller MsKyoukaController = new MS_KYOUKA_Controller();
             _instance.CacheData = MsKyoukaController.GetAll();
+            _instance.CacheData.Insert(0, new MS_KYOUKA { KYOUKA_NAME = "", MS_KYOUKA_ID = -1 });
         }
         public static MS_KYOUKA Get(int MS_KYOUKA_ID)
         {

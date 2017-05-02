@@ -17,7 +17,7 @@ namespace JisuCounterData
             int TargetYear = Year;
             if (Month < 4)
             {
-                TargetYear--;
+                TargetYear++;
             }
             DateTime TargetDate = new DateTime(TargetYear, Month, 1);
             DateTime FinishDate = new DateTime(TargetYear, Month, DateTime.DaysInMonth(Year, Month));
@@ -35,13 +35,16 @@ namespace JisuCounterData
             {
                 //MS_WEEKからTargetDateの曜日のデータを取得する
                 var YoubiDatas = MsWeeks.Where(x => x.DAY == (int)TargetDate.DayOfWeek);
-                if (YoubiDatas != null)
+                if (YoubiDatas != null )
                 {
-                    
+
                     foreach (var YoubiData in YoubiDatas)
                     {
-                        DateData dateData = new DateData { JIKANWARI = TargetDate, KOMA = YoubiData.KOMA, MS_KYOUKA_ID = YoubiData.MS_KYOUKA_ID, MS_GAKUNEN_ID = MsGakunenID };
-                        DateDatas.Add(dateData);
+                        if (YoubiData.MS_KYOUKA_ID > 0)
+                        {
+                            DateData dateData = new DateData { JIKANWARI = TargetDate, KOMA = YoubiData.KOMA, MS_KYOUKA_ID = YoubiData.MS_KYOUKA_ID, MS_GAKUNEN_ID = MsGakunenID };
+                            DateDatas.Add(dateData);
+                        }
                     }
                 }
                 TargetDate = TargetDate.AddDays(1);

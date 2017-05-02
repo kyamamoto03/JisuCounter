@@ -55,6 +55,19 @@ namespace JisuCounter.Control
             }
         }
 
+        internal void Clear()
+        {
+            DateDatas.Clear();
+            RaisePropertyChanged("Koma1");
+            RaisePropertyChanged("Koma2");
+            RaisePropertyChanged("Koma3");
+            RaisePropertyChanged("Koma4");
+            RaisePropertyChanged("Koma5");
+            RaisePropertyChanged("Koma6");
+            RaisePropertyChanged("Koma7");
+            RaisePropertyChanged("Koma8");
+        }
+
         public void LoadKyoukaMaster()
         {
             var Kyoukas = MS_KYOUKA_CACHE.GetAll();
@@ -193,8 +206,14 @@ namespace JisuCounter.Control
                 data.MS_GAKUNEN_ID = MS_GAKUNEN_ID;
                 DateDatas.Add(data);
             }
-            data.MS_KYOUKA_ID = value.MS_KYOUKA_ID;
-            
+            if (value.MS_KYOUKA_ID > 0)
+            {
+                data.MS_KYOUKA_ID = value.MS_KYOUKA_ID;
+            }
+            else
+            {
+                DateDatas.RemoveAll(x => x.KOMA == SearchKoma);
+            }
         }
 
         private MS_KYOUKA GetKoma(int SearchKoma)

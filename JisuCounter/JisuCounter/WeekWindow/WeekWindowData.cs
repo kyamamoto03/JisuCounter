@@ -39,10 +39,15 @@ namespace JisuCounter.WeekWindow
                     window.ShowDialog();
 
                     var EditDatas = window.WeekDayEditWindowData.MsWeeks;
+                    MsWeeks.RemoveAll(w => w.DAY == day);
+
                     foreach (var EditData in EditDatas)
                     {
+
+                        
+
                         var a = MsWeeks.Where(d => d.DAY == EditData.DAY && d.KOMA == EditData.KOMA).FirstOrDefault();
-                        if (a == null)
+                        if (a == null && EditData.MS_KYOUKA_ID > 0)
                         {
                             MsWeeks.Add(EditData);
                         }

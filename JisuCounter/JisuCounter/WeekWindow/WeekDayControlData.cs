@@ -80,7 +80,7 @@ namespace JisuCounter.WeekWindow
                 int KOMA = 1;
                 var KomaData = MsWeeks.Where(x => x.KOMA == KOMA).FirstOrDefault();
 
-                if (KomaData != null)
+                if (KomaData != null && KomaData.MS_KYOUKA_ID > 0)
                 {
                     var kyouka = MS_KYOUKA_CACHE.Get(KomaData.MS_KYOUKA_ID);
                     if (kyouka.COLOR != null)
@@ -190,7 +190,7 @@ namespace JisuCounter.WeekWindow
                 StringBuilder sb = new StringBuilder();
                 var KomaData = MsWeeks.Where(x => x.KOMA == KOMA).FirstOrDefault();
 
-                if (KomaData != null)
+                if (KomaData != null && KomaData.MS_KYOUKA_ID > 0)
                 {
                     var kyouka = MS_KYOUKA_CACHE.Get(KomaData.MS_KYOUKA_ID);
                     sb.AppendFormat("{0} {1}", kyouka.KYOUKA_NAME, kyouka.KYOUKA_RATIO);

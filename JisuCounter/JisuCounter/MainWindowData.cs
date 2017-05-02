@@ -35,7 +35,7 @@ namespace JisuCounter
         List<DateData> m_DateDatas = new List<DateData>();
         List<MS_JISU> m_Jisus = new List<MS_JISU>();
 
-        Color FORE_COLOR = Colors.White;
+        Color FORE_COLOR = Colors.Black;
 
         bool IsModify = false;
         #region 年度選択
@@ -57,6 +57,28 @@ namespace JisuCounter
 
         public Grid CalenderGrid;
 
+        private void Refresh()
+        {
+            if (CalenderGrid != null)
+            {
+                MakeCalender(CalenderGrid, SelectedYear, _SelectedMonth, new Func<List<DateData>, DateTime, List<DateData>>((x, jikanwari) =>
+                {
+                    Control.DayEditWindow window = new Control.DayEditWindow();
+                    window.DayEditWindowData.MS_GAKUNEN_ID = SelectedMsGakunen.MS_GAKUNEN_ID;
+                    window.DayEditWindowData.DateDatas = x;
+                    window.DayEditWindowData.Jikanwari = jikanwari;
+                    if (window.ShowDialog() == true)
+                    {
+                        IsModify = true;
+                        MakeYearSum();
+                        return window.DayEditWindowData.DateDatas;
+
+                    }
+                    return null;
+                }));
+            }
+        }
+        
         #region 月選択
         int _SelectedMonth { get; set; }
         public int SelectedMonth {
@@ -72,30 +94,13 @@ namespace JisuCounter
                 Refresh();
             }
         }
-        private void Refresh()
-        {
-            if (CalenderGrid != null)
-            {
-                MakeCalender(CalenderGrid, SelectedYear, _SelectedMonth, new Func<List<DateData>, DateTime, List<DateData>>((x, jikanwari) =>
-                {
-                    Control.DayEditWindow window = new Control.DayEditWindow();
-                    window.DayEditWindowData.MS_GAKUNEN_ID = SelectedMsGakunen.MS_GAKUNEN_ID;
-                    window.DayEditWindowData.DateDatas = x;
-                    window.DayEditWindowData.Jikanwari = jikanwari;
-                    if (window.ShowDialog() == true)
-                    {
-                        IsModify = true;
-                        return window.DayEditWindowData.DateDatas;
 
-                    }
-                    return null;
-                }));
-            }
-        }
         internal void BulkUpdate(List<MS_WEEK> msWeeks)
         {
             ///一括設定
             DateDataUpdateLogic logic = new DateDataUpdateLogic();
+
+
             logic.Update(m_DateDatas,msWeeks, SelectedYear, SelectedMonth, SelectedMsGakunen.MS_GAKUNEN_ID);
 
             Refresh();
@@ -157,9 +162,9 @@ namespace JisuCounter
 
         }
 
-        public void DBOpen()
+        public void DBOpen(string fileName)
         {
-            DBConnect.GetInstance().Open(@"Data Source=JisuCounter.sqlite3");
+            DBConnect.GetInstance().Open(@"Data Source=" + fileName);
             MS_KYOUKA_CACHE.CacheFill();
             
 
@@ -208,6 +213,7 @@ namespace JisuCounter
             MS_JISU_Controller MsJisuController = new MS_JISU_Controller();
             m_Jisus = MsJisuController.GetAt(SelectedMsGakunen);
 
+            MakeYearSum();
             Refresh();
         }
 
@@ -242,8 +248,11 @@ namespace JisuCounter
                         var EditDatas = ClickAction(x, date);
                         if (EditDatas != null)
                         {
+                            m_DateDatas.RemoveAll(d => d.JIKANWARI.ToString("yyyyMMdd") == date.Year.ToString() + date.Month.ToString("D2") + date.Day.ToString("D2"));
+
                             foreach (var EditData in EditDatas)
                             {
+                                
                                 var a = m_DateDatas.Where(d => d.JIKANWARI == EditData.JIKANWARI && d.KOMA == EditData.KOMA).FirstOrDefault();
                                 if (a == null)
                                 {
@@ -284,6 +293,7 @@ namespace JisuCounter
         /// 合計字数の幅
         /// </summary>
         double JISU_WIDTH = 40d;
+
         #region 月合計
         List<MonthSumLabel> MonthSumLabels = new List<MonthSumLabel>();
 
@@ -311,9 +321,8 @@ namespace JisuCounter
                 MonthSumLabels.Add(l.SumLabels);
                 MonthSum.Children.Add(l.Grid);
             }
-
             ///月の合計を追加
-            var a = MakeSumLabel(("合計","Black"));
+            var a = MakeSumLabel(("合計", "Transparent"));
             MonthSumLabels.Add(a.SumLabels);
             MonthSum.Children.Add(a.Grid);
             MonthlySum = a.SumLabels;
@@ -369,10 +378,6 @@ namespace JisuCounter
                 {
                     targetLabels.SumLabel.Content = data.Value;
                 }
-                else
-                {
-                    targetLabels.SumLabel.Content = 0;
-                }
             }
 
             ///月合計を計算
@@ -393,6 +398,7 @@ namespace JisuCounter
         }
         List<YearSumLabel> YearSumLabels = new List<YearSumLabel>();
 
+        YearSumLabel SumLabel;
         public void MakeYearSumBase(Panel YearSum)
         {
             MS_KYOUKA_Controller MsKyoukaController = new MS_KYOUKA_Controller();
@@ -408,8 +414,9 @@ namespace JisuCounter
             }
 
             ///月の合計を追加
-            var a = MakeYearSumLabel(("合計", "Black"));
+            var a = MakeYearSumLabel(("合計", "Transparent"));
             YearSumLabels.Add(a.SumLabels);
+            SumLabel = a.SumLabels;
             YearSum.Children.Add(a.Grid);
 
         }
@@ -458,6 +465,7 @@ namespace JisuCounter
             DateDataController DateDataController = new DateDataController();
             var datas = DateDataController.Get年時数(m_DateDatas);
 
+            double SumJisu = 0d;
             //一度合計値を０にする
             foreach (var control in YearSumLabels)
             {
@@ -474,6 +482,10 @@ namespace JisuCounter
                         {
                             control.SumLabel.Foreground = new SolidColorBrush(Colors.Red);
                         }
+                        else
+                        {
+                            control.SumLabel.Foreground = new SolidColorBrush(FORE_COLOR);
+                        }
                         control.SumLabel.Content = 年時数;
                     }
                     else
@@ -482,7 +494,36 @@ namespace JisuCounter
                         {
                             control.SumLabel.Foreground = new SolidColorBrush(Colors.Red);
                         }
+                        else
+                        {
+                            control.SumLabel.Foreground = new SolidColorBrush(FORE_COLOR);
+                        }
                     }
+                }
+                else
+                {
+                    control.JisuLabel.Content = "0";
+                }
+            }
+
+            var 全字数合計 = m_DateDatas.Join(MS_KYOUKA_CACHE.GetAll(), x => x.MS_KYOUKA_ID, j => j.MS_KYOUKA_ID, (x, j) => new
+            {
+                MS_KYOUKA_ID = j.MS_KYOUKA_ID,
+                RATIO = j.KYOUKA_RATIO
+            });
+
+            
+            if (SumLabel != null)
+            {
+                SumLabel.JisuLabel.Content = m_Jisus.Sum(x => x.JISU);
+                SumLabel.SumLabel.Content = 全字数合計.Sum(x => x.RATIO);
+                if (全字数合計.Sum(x => x.RATIO) < m_Jisus.Sum(x => x.JISU) )
+                {
+                    SumLabel.SumLabel.Foreground = new SolidColorBrush(Colors.Red);
+                }
+                else
+                {
+                    SumLabel.SumLabel.Foreground = new SolidColorBrush(FORE_COLOR);
                 }
             }
 

@@ -137,6 +137,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="2017年度字数.jisu" />
     <None Include="JisuCounter.sqlite3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

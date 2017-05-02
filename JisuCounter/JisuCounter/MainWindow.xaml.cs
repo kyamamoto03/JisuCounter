@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using JisuCounterData;
+using Microsoft.Win32;
 
 namespace JisuCounter
 {
@@ -27,17 +28,29 @@ namespace JisuCounter
         {
             InitializeComponent();
             mainWindowData = new MainWindowData();
-            mainWindowData.DBOpen();
-
-            mainWindowData.LoadMaster();
+            DataContext = mainWindowData;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.FilterIndex = 1;
+            openFileDialog.Filter = "字数 ファイル(.jisu)|*.jisu";
+            bool? result = openFileDialog.ShowDialog();
+            if (result == false)
+            {
+                MessageBox.Show("プログラムを終了します");
+                Close();
+                return;
+            }
+
+            mainWindowData.DBOpen(openFileDialog.FileName);
+
+            mainWindowData.LoadMaster();
+
             mainWindowData.LoadData();
 
 
-            DataContext = mainWindowData;
 
             mainWindowData.MakeMonthSumBase(MonthSum);
             mainWindowData.MakeYearSumBase(YearSum);
@@ -55,6 +68,7 @@ namespace JisuCounter
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             mainWindowData.Save();
+            MessageBox.Show("更新しました", "更新", MessageBoxButton.OK);
         }
 
         /// <summary>

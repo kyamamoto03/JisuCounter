@@ -45,5 +45,10 @@ namespace JisuCounter.Control
         {
             DayEditWindowData.Init();
         }
+
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            DayEditWindowData.Clear();
+        }
     }
 }

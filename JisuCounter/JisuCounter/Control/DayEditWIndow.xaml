@@ -12,6 +12,7 @@
                 <RowDefinition Height="20"/>
                 <RowDefinition/>
                 <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             <Label Content="{Binding Day}" ContentStringFormat="{}{0:dd(ddd)}"  Grid.Row="0" Margin="0,-3"/>
             <Grid Grid.Row="1" >
@@ -53,6 +54,7 @@
                 <Button x:Name="OKButton" Content="設定" Grid.Column="0" Width="60" Height="20" Click="OKButton_Click"/>
                 <Button x:Name="CancelButton" Content="キャンセル" Grid.Column="1"  Width="60" Height="20" Click="CancelButton_Click"/>
             </Grid>
+            <Button x:Name="ClearButton" Content="クリア" Grid.Row="3" Width="70" Height="20" Click="ClearButton_Click"/>    
         </Grid>
 
     </Grid>
