@@ -72,5 +72,20 @@ namespace JisuCounter
             }
 
         }
+
+        private void JisuSetButton_Click(object sender, RoutedEventArgs e)
+        {
+            JisuMaster.JisuMasterWindow window = new JisuMaster.JisuMasterWindow();
+            window.TargetGakunen = mainWindowData.SelectedMsGakunen;
+
+            if (window.ShowDialog() == true)
+            {
+                ///字数を更新する
+                MS_JISU_Controller JisuController = new MS_JISU_Controller();
+
+                JisuController.Inserts(mainWindowData.SelectedMsGakunen, window.TargetJisus);
+                mainWindowData.LoadDateData();
+            }
+        }
     }
 }

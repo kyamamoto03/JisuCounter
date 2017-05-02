@@ -49,7 +49,7 @@ namespace JisuCounter
             set
             {
                 _SelectedYear = value;
-                LoadDateData(_SelectedYear);
+                LoadDateData();
                 RaisePropertyChanged("SelectedYear");
             }
         }
@@ -143,7 +143,7 @@ namespace JisuCounter
                 }
                 IsModify = false;
                 _SelectedMsGakunen = value;
-                LoadDateData(SelectedYear);
+                LoadDateData();
 
 
                 RaisePropertyChanged("SelectedMsGakunen");
@@ -198,12 +198,12 @@ namespace JisuCounter
             SelectedMsGakunen = MsGakunen[0];
         }
 
-        void LoadDateData(int year)
+        public void LoadDateData()
         {
 
             DateDataController DateDataController = new DateDataController();
 
-            m_DateDatas = DateDataController.Get(SelectedMsGakunen.MS_GAKUNEN_ID, year);
+            m_DateDatas = DateDataController.Get(SelectedMsGakunen.MS_GAKUNEN_ID, SelectedYear);
 
             MS_JISU_Controller MsJisuController = new MS_JISU_Controller();
             m_Jisus = MsJisuController.GetAt(SelectedMsGakunen);

@@ -19,6 +19,7 @@
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="学年" VerticalAlignment="Center" HorizontalAlignment="Right"/>
@@ -29,7 +30,9 @@
 
                 <Button Grid.Column="4" x:Name="UpdateButton" Width="60" VerticalAlignment="Center" Content="更新" Click="UpdateButton_Click"/>
 
-                <Button Grid.Column="5" x:Name="WeekWindowButton" Content="一括設定" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" Click="WeekWindowButton_Click" Margin="10"/>
+                <Button Grid.Column="5" x:Name="JisuSetButton" Content="教科時間設定" Width="120" Height="25" Click="JisuSetButton_Click"/>
+
+                <Button Grid.Column="6" x:Name="WeekWindowButton" Content="一括設定" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" Click="WeekWindowButton_Click" Margin="10"/>
             </Grid>
         </Grid>
         <Grid  Grid.Row="1">

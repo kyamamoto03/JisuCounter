@@ -57,6 +57,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="JisuMaster\JisuMasterWindow.xaml.cs">
+      <DependentUpon>JisuMasterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="JisuMaster\JisuMasterWindowData.cs" />
     <Compile Include="WeekWindow\WeekDayControl.xaml.cs">
       <DependentUpon>WeekDayControl.xaml</DependentUpon>
     </Compile>
@@ -74,6 +78,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Control\DayEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="JisuMaster\JisuMasterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
