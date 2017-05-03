@@ -35,7 +35,7 @@ namespace JisuCounter
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.FilterIndex = 1;
-            openFileDialog.Filter = "字数 ファイル(.jisu)|*.jisu";
+            openFileDialog.Filter = "時数 ファイル(.jisu)|*.jisu";
             bool? result = openFileDialog.ShowDialog();
             if (result == false)
             {
@@ -94,11 +94,12 @@ namespace JisuCounter
 
             if (window.ShowDialog() == true)
             {
-                ///字数を更新する
+                ///時数を更新する
                 MS_JISU_Controller JisuController = new MS_JISU_Controller();
 
                 JisuController.Inserts(mainWindowData.SelectedMsGakunen, window.TargetJisus);
-                mainWindowData.LoadDateData();
+                mainWindowData.LoadJisu();
+                mainWindowData.MakeYearSum();
             }
         }
     }

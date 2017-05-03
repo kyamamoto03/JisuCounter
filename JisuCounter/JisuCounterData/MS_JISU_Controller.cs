@@ -40,7 +40,7 @@ where MS_GAKUNEN_ID = :MS_GAKUNEN_ID
         }
 
         /// <summary>
-        /// 学年の字数マスタを更新（削除の後挿入）
+        /// 学年の時数マスタを更新（削除の後挿入）
         /// </summary>
         /// <param name="MsGakune"></param>
         /// <param name="Jisus"></param>

@@ -210,13 +210,16 @@ namespace JisuCounter
 
             m_DateDatas = DateDataController.Get(SelectedMsGakunen.MS_GAKUNEN_ID, SelectedYear);
 
-            MS_JISU_Controller MsJisuController = new MS_JISU_Controller();
-            m_Jisus = MsJisuController.GetAt(SelectedMsGakunen);
+            LoadJisu();
 
             MakeYearSum();
             Refresh();
         }
-
+        public void LoadJisu()
+        {
+            MS_JISU_Controller MsJisuController = new MS_JISU_Controller();
+            m_Jisus = MsJisuController.GetAt(SelectedMsGakunen);
+        }
 
         public void MakeCalender(Grid CalenderGrid,int year, int month ,Func<List<DateData>,DateTime, List<DateData>> ClickAction)
         {
@@ -290,7 +293,7 @@ namespace JisuCounter
         }
 
         /// <summary>
-        /// 合計字数の幅
+        /// 合計時数の幅
         /// </summary>
         double JISU_WIDTH = 40d;
 
@@ -506,7 +509,7 @@ namespace JisuCounter
                 }
             }
 
-            var 全字数合計 = m_DateDatas.Join(MS_KYOUKA_CACHE.GetAll(), x => x.MS_KYOUKA_ID, j => j.MS_KYOUKA_ID, (x, j) => new
+            var 全時数合計 = m_DateDatas.Join(MS_KYOUKA_CACHE.GetAll(), x => x.MS_KYOUKA_ID, j => j.MS_KYOUKA_ID, (x, j) => new
             {
                 MS_KYOUKA_ID = j.MS_KYOUKA_ID,
                 RATIO = j.KYOUKA_RATIO
@@ -516,8 +519,8 @@ namespace JisuCounter
             if (SumLabel != null)
             {
                 SumLabel.JisuLabel.Content = m_Jisus.Sum(x => x.JISU);
-                SumLabel.SumLabel.Content = 全字数合計.Sum(x => x.RATIO);
-                if (全字数合計.Sum(x => x.RATIO) < m_Jisus.Sum(x => x.JISU) )
+                SumLabel.SumLabel.Content = 全時数合計.Sum(x => x.RATIO);
+                if (全時数合計.Sum(x => x.RATIO) < m_Jisus.Sum(x => x.JISU) )
                 {
                     SumLabel.SumLabel.Foreground = new SolidColorBrush(Colors.Red);
                 }

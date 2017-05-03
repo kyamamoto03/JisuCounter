@@ -11,7 +11,7 @@ namespace JisuCounter.JisuMaster
     class JisuMasterWindowData
     {
         /// <summary>
-        /// 合計字数の幅
+        /// 合計時数の幅
         /// </summary>
         double JISU_WIDTH = 40d;
 
@@ -147,7 +147,7 @@ namespace JisuCounter.JisuMaster
         }
 
         /// <summary>
-        /// 字数を取り込む
+        /// 時数を取り込む
         /// </summary>
         public void SetYearData()
         {

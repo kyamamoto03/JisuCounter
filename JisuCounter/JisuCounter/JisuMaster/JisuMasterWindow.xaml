@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JisuCounter.JisuMaster"
         mc:Ignorable="d"
-        Title="年間字数設定" Height="172.246" Width="812.288" Loaded="Window_Loaded">
+        Title="年間時数設定" Height="172.246" Width="812.288" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Content="年間字数"/>
+        <Label Grid.Row="0" Content="年間時数"/>
 
         <WrapPanel x:Name="YearSumPanel" Grid.Row="1"></WrapPanel>
 
@@ -21,8 +21,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" x:Name="SetButton" Content="設定" Width="50" Height="30" Click="SetButton_Click"/>
-            <Button Grid.Column="1"  x:Name="CancelButton" Content="キャンセル" Width="50" Height="30" Click="CancelButton_Click"/>
+            <Button Grid.Column="0" x:Name="SetButton" Content="設定" Width="90" Height="30" Click="SetButton_Click"/>
+            <Button Grid.Column="1"  x:Name="CancelButton" Content="キャンセル" Width="90" Height="30" Click="CancelButton_Click"/>
         </Grid>
     </Grid>
 </Window>
