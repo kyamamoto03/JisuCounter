@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using MySql.Data.MySqlClient;
 
 namespace JisuCounterData
 {
@@ -19,13 +19,15 @@ order by DAY,KOMA
             #endregion
             List<MS_WEEK> retDatas = new List<MS_WEEK>();
 
-            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
-                var reader = command.ExecuteReader();
-                var mapper = new Mapper<MS_WEEK>();
-                while (reader.Read())
+                using (var reader = command.ExecuteReader())
                 {
-                    retDatas.Add(mapper.Mapping(reader));
+                    var mapper = new Mapper<MS_WEEK>();
+                    while (reader.Read())
+                    {
+                        retDatas.Add(mapper.Mapping(reader));
+                    }
                 }
             }
 
@@ -34,7 +36,7 @@ order by DAY,KOMA
 
         public void Updates(List<MS_WEEK> MsWeeks)
         {
-            using (SQLiteTransaction trans = DBConnect.GetConnection().BeginTransaction())
+            using (var trans = DBConnect.GetConnection().BeginTransaction())
             {
                 try
                 {
@@ -67,7 +69,7 @@ values(
 
 ";
             #endregion
-            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
                 command.Parameters.AddWithValue(":DAY", MsWeek.DAY);
                 command.Parameters.AddWithValue(":KOMA", MsWeek.KOMA);
@@ -85,7 +87,7 @@ delete from MS_WEEK
 
 ";
             #endregion
-            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
                 command.ExecuteNonQuery();
             }

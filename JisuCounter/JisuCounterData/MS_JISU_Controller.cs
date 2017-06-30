@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using MySql.Data.MySqlClient;
 
 namespace JisuCounterData
 {
@@ -24,15 +24,17 @@ where MS_GAKUNEN_ID = :MS_GAKUNEN_ID
             #endregion
             List<MS_JISU> retDatas = new List<MS_JISU>();
 
-            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
                 command.Parameters.AddWithValue(":MS_GAKUNEN_ID", MsGakune.MS_GAKUNEN_ID);
 
-                var reader = command.ExecuteReader();
-                var mapper = new Mapper<MS_JISU>();
-                while (reader.Read())
+                using (var reader = command.ExecuteReader())
                 {
-                    retDatas.Add(mapper.Mapping(reader));
+                    var mapper = new Mapper<MS_JISU>();
+                    while (reader.Read())
+                    {
+                        retDatas.Add(mapper.Mapping(reader));
+                    }
                 }
             }
 
@@ -47,7 +49,7 @@ where MS_GAKUNEN_ID = :MS_GAKUNEN_ID
         public void Inserts(MS_GAKUNEN MsGakune, List<MS_JISU> Jisus)
         {
 
-            using (SQLiteTransaction trans = DBConnect.GetConnection().BeginTransaction())
+            using (MySqlTransaction trans = DBConnect.GetConnection().BeginTransaction())
             {
                 ///削除
                 Deletes(MsGakune);
@@ -76,7 +78,7 @@ values(
 ";
             #endregion
 
-            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
                 command.Parameters.AddWithValue(":MS_GAKUNEN_ID", Jisu.MS_GAKUNEN_ID);
                 command.Parameters.AddWithValue(":KYOUKA_NAME", Jisu.KYOUKA_NAME);
@@ -95,7 +97,7 @@ where MS_GAKUNEN_ID = :MS_GAKUNEN_ID
 ";
             #endregion
 
-            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
                 command.Parameters.AddWithValue(":MS_GAKUNEN_ID", MsGakune.MS_GAKUNEN_ID);
 

@@ -162,9 +162,9 @@ namespace JisuCounter
 
         }
 
-        public void DBOpen(string fileName)
+        public void DBOpen()
         {
-            DBConnect.GetInstance().Open(@"Data Source=" + fileName);
+            DBConnect.GetInstance().Open(@"Database=Jisu;Data Source=jisudb.cjzvzzwypzj9.us-east-2.rds.amazonaws.com;User Id=JisuAccessUser;Password=ZU6CzwL7lNgvXv");
             MS_KYOUKA_CACHE.CacheFill();
             
 

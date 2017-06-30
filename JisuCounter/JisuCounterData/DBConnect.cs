@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using MySql.Data.MySqlClient;
 
 namespace JisuCounterData
 {
@@ -11,21 +11,21 @@ namespace JisuCounterData
     {
         static DBConnect _instance = new DBConnect();
 
-        SQLiteConnection _conn;
+        MySqlConnection _conn;
 
         public static DBConnect GetInstance()
         {
             return _instance;
         }
 
-        public static SQLiteConnection GetConnection()
+        public static MySqlConnection GetConnection()
         {
             return _instance._conn;
         }
 
         public void Open(string connectString)
         {
-            _conn = new SQLiteConnection(connectString);
+            _conn = new MySqlConnection(connectString);
             _conn.Open();
         }
 

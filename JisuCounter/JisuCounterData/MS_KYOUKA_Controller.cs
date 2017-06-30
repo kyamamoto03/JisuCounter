@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using MySql.Data.MySqlClient;
 
 namespace JisuCounterData
 {
@@ -27,13 +27,15 @@ order by MS_KYOUKA_ID
 
             List<MS_KYOUKA> retDatas = new List<MS_KYOUKA>();
 
-            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
-                var reader = command.ExecuteReader();
-                var mapper = new Mapper<MS_KYOUKA>();
-                while(reader.Read())
+                using (var reader = command.ExecuteReader())
                 {
-                    retDatas.Add(mapper.Mapping(reader));
+                    var mapper = new Mapper<MS_KYOUKA>();
+                    while (reader.Read())
+                    {
+                        retDatas.Add(mapper.Mapping(reader));
+                    }
                 }
             }
 
@@ -55,23 +57,25 @@ order by KYOUKA_NAME,COLOR
 
             var retDatas = new List<(string KYOUKA_NAME, string COLOR)>();
 
-            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
-                var reader = command.ExecuteReader();
-                while (reader.Read())
+                using (var reader = command.ExecuteReader())
                 {
-                    string k = reader.GetString(0);
-                    string color;
-                    if (reader.IsDBNull(1) == true)
+                    while (reader.Read())
                     {
-                        color = "Black";
+                        string k = reader.GetString(0);
+                        string color;
+                        if (reader.IsDBNull(1) == true)
+                        {
+                            color = "Black";
+                        }
+                        else
+                        {
+                            color = reader.GetString(1);
+                        }
+                        var data = (KYOUKA_NAME: k, COLOR: color);
+                        retDatas.Add(data);
                     }
-                    else
-                    {
-                        color = reader.GetString(1);
-                    }
-                    var data = (KYOUKA_NAME:k, COLOR:color);
-                    retDatas.Add(data);
                 }
             }
 

@@ -33,18 +33,7 @@ namespace JisuCounter
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.FilterIndex = 1;
-            openFileDialog.Filter = "時数 ファイル(.jisu)|*.jisu";
-            bool? result = openFileDialog.ShowDialog();
-            if (result == false)
-            {
-                MessageBox.Show("プログラムを終了します");
-                Close();
-                return;
-            }
-
-            mainWindowData.DBOpen(openFileDialog.FileName);
+            mainWindowData.DBOpen();
 
             mainWindowData.LoadMaster();
 

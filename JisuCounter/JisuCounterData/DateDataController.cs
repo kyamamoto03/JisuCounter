@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
+using MySql.Data.MySqlClient;
 
 namespace JisuCounterData
 {
@@ -29,7 +29,7 @@ order by JIKANWARI,KOMA
 
             List<DateData> retDatas = new List<DateData>();
 
-            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
                 command.Parameters.AddWithValue(":MS_GAKUNEN_ID", MS_GAKUNEN_ID);
                 var 年度 = Get年度(Year);
@@ -106,7 +106,7 @@ order by JIKANWARI,KOMA
 
         public void Save(List<DateData> dateDatas, MS_GAKUNEN Gakunen, int Year)
         {
-            using (SQLiteTransaction trans = DBConnect.GetConnection().BeginTransaction())
+            using (var trans = DBConnect.GetConnection().BeginTransaction())
             {
                 int cnt = DeleteYearMonth(Gakunen, Year);
 
@@ -135,7 +135,7 @@ values(
 
 ";
             #endregion
-            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
                 command.Parameters.AddWithValue(":MS_GAKUNEN_ID", dateData.MS_GAKUNEN_ID);
                 command.Parameters.AddWithValue(":JIKANWARI", dateData.JIKANWARI);
@@ -159,7 +159,7 @@ and strftime('%Y-%m', JIKANWARI) >= :NENDO_START and strftime('%Y-%m', JIKANWARI
             #endregion
 
             int cnt = 0;
-            using (SQLiteCommand command = new SQLiteCommand(SQL, DBConnect.GetConnection()))
+            using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
                 var 年度 = Get年度(Year);
 
