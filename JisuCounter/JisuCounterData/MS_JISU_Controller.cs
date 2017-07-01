@@ -19,14 +19,14 @@ KYOUKA_NAME,
 JISU
 
 from MS_JISU
-where MS_GAKUNEN_ID = :MS_GAKUNEN_ID
+where MS_GAKUNEN_ID = @MS_GAKUNEN_ID
 ";
             #endregion
             List<MS_JISU> retDatas = new List<MS_JISU>();
 
             using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
-                command.Parameters.AddWithValue(":MS_GAKUNEN_ID", MsGakune.MS_GAKUNEN_ID);
+                command.Parameters.AddWithValue("@MS_GAKUNEN_ID", MsGakune.MS_GAKUNEN_ID);
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -72,17 +72,17 @@ MS_GAKUNEN_ID,
 KYOUKA_NAME,
 JISU)
 values(
-:MS_GAKUNEN_ID,
-:KYOUKA_NAME,
-:JISU)
+@MS_GAKUNEN_ID,
+@KYOUKA_NAME,
+@JISU)
 ";
             #endregion
 
             using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
-                command.Parameters.AddWithValue(":MS_GAKUNEN_ID", Jisu.MS_GAKUNEN_ID);
-                command.Parameters.AddWithValue(":KYOUKA_NAME", Jisu.KYOUKA_NAME);
-                command.Parameters.AddWithValue(":JISU", Jisu.JISU);
+                command.Parameters.AddWithValue("@MS_GAKUNEN_ID", Jisu.MS_GAKUNEN_ID);
+                command.Parameters.AddWithValue("@KYOUKA_NAME", Jisu.KYOUKA_NAME);
+                command.Parameters.AddWithValue("@JISU", Jisu.JISU);
 
                 command.ExecuteNonQuery();
             }
@@ -93,13 +93,13 @@ values(
             #region SQL 
             string SQL = @"
 delete from MS_JISU
-where MS_GAKUNEN_ID = :MS_GAKUNEN_ID
+where MS_GAKUNEN_ID = @MS_GAKUNEN_ID
 ";
             #endregion
 
             using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
-                command.Parameters.AddWithValue(":MS_GAKUNEN_ID", MsGakune.MS_GAKUNEN_ID);
+                command.Parameters.AddWithValue("@MS_GAKUNEN_ID", MsGakune.MS_GAKUNEN_ID);
 
                 command.ExecuteNonQuery();
             }

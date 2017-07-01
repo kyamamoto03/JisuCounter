@@ -63,17 +63,17 @@ DAY,
 KOMA,
 MS_KYOUKA_ID)
 values(
-:DAY,
-:KOMA,
-:MS_KYOUKA_ID)
+@DAY,
+@KOMA,
+@MS_KYOUKA_ID)
 
 ";
             #endregion
             using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
-                command.Parameters.AddWithValue(":DAY", MsWeek.DAY);
-                command.Parameters.AddWithValue(":KOMA", MsWeek.KOMA);
-                command.Parameters.AddWithValue(":MS_KYOUKA_ID", MsWeek.MS_KYOUKA_ID);
+                command.Parameters.AddWithValue("@DAY", MsWeek.DAY);
+                command.Parameters.AddWithValue("@KOMA", MsWeek.KOMA);
+                command.Parameters.AddWithValue("@MS_KYOUKA_ID", MsWeek.MS_KYOUKA_ID);
 
                 command.ExecuteNonQuery();
             }

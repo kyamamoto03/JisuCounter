@@ -39,7 +39,7 @@ namespace JisuCounter
 
         bool IsModify = false;
         #region 年度選択
-        int _SelectedYear { get; set; }
+        int _SelectedYear = DateTime.Today.Year;
         public int SelectedYear
         {
             get

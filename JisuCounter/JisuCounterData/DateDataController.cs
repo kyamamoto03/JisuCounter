@@ -20,8 +20,8 @@ KOMA,
 MS_KYOUKA_ID
 
 from DATE_DATA
-where MS_GAKUNEN_ID = :MS_GAKUNEN_ID
-and strftime('%Y-%m', JIKANWARI) >= :NENDO_START and strftime('%Y-%m', JIKANWARI) <= :NENDO_END
+where MS_GAKUNEN_ID = @MS_GAKUNEN_ID
+and JIKANWARI >= @NENDO_START and JIKANWARI < @NENDO_END
 order by JIKANWARI,KOMA
 
 ";
@@ -31,17 +31,19 @@ order by JIKANWARI,KOMA
 
             using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
-                command.Parameters.AddWithValue(":MS_GAKUNEN_ID", MS_GAKUNEN_ID);
+                command.Parameters.AddWithValue("@MS_GAKUNEN_ID", MS_GAKUNEN_ID);
                 var 年度 = Get年度(Year);
 
-                command.Parameters.AddWithValue(":NENDO_START", 年度.NendoStart);
-                command.Parameters.AddWithValue(":NENDO_END", 年度.NendoEnd);
+                command.Parameters.AddWithValue("@NENDO_START", 年度.NendoStart);
+                command.Parameters.AddWithValue("@NENDO_END", 年度.NendoEnd);
 
-                var reader = command.ExecuteReader();
-                var mapper = new Mapper<DateData>();
-                while (reader.Read())
+                using (var reader = command.ExecuteReader())
                 {
-                    retDatas.Add(mapper.Mapping(reader));
+                    var mapper = new Mapper<DateData>();
+                    while (reader.Read())
+                    {
+                        retDatas.Add(mapper.Mapping(reader));
+                    }
                 }
             }
 
@@ -128,19 +130,19 @@ JIKANWARI,
 KOMA,
 MS_KYOUKA_ID)
 values(
-:MS_GAKUNEN_ID,
-:JIKANWARI,
-:KOMA,
-:MS_KYOUKA_ID)
+@MS_GAKUNEN_ID,
+@JIKANWARI,
+@KOMA,
+@MS_KYOUKA_ID)
 
 ";
             #endregion
             using (MySqlCommand command = new MySqlCommand(SQL, DBConnect.GetConnection()))
             {
-                command.Parameters.AddWithValue(":MS_GAKUNEN_ID", dateData.MS_GAKUNEN_ID);
-                command.Parameters.AddWithValue(":JIKANWARI", dateData.JIKANWARI);
-                command.Parameters.AddWithValue(":KOMA", dateData.KOMA);
-                command.Parameters.AddWithValue(":MS_KYOUKA_ID", dateData.MS_KYOUKA_ID);
+                command.Parameters.AddWithValue("@MS_GAKUNEN_ID", dateData.MS_GAKUNEN_ID);
+                command.Parameters.AddWithValue("@JIKANWARI", dateData.JIKANWARI);
+                command.Parameters.AddWithValue("@KOMA", dateData.KOMA);
+                command.Parameters.AddWithValue("@MS_KYOUKA_ID", dateData.MS_KYOUKA_ID);
 
                 command.ExecuteNonQuery();
             }
@@ -152,8 +154,8 @@ values(
             string SQL = @"
 delete from DATE_DATA
 
-where MS_GAKUNEN_ID = :MS_GAKUNEN_ID
-and strftime('%Y-%m', JIKANWARI) >= :NENDO_START and strftime('%Y-%m', JIKANWARI) <= :NENDO_END
+where MS_GAKUNEN_ID = @MS_GAKUNEN_ID
+and strftime('%Y-%m', JIKANWARI) >= @NENDO_START and strftime('%Y-%m', JIKANWARI) <= @NENDO_END
 
 ";
             #endregion
@@ -163,22 +165,22 @@ and strftime('%Y-%m', JIKANWARI) >= :NENDO_START and strftime('%Y-%m', JIKANWARI
             {
                 var 年度 = Get年度(Year);
 
-                command.Parameters.AddWithValue(":MS_GAKUNEN_ID", Gakunen.MS_GAKUNEN_ID);
-                command.Parameters.AddWithValue(":NENDO_START", 年度.NendoStart);
-                command.Parameters.AddWithValue(":NENDO_END", 年度.NendoEnd);
+                command.Parameters.AddWithValue("@MS_GAKUNEN_ID", Gakunen.MS_GAKUNEN_ID);
+                command.Parameters.AddWithValue("@NENDO_START", 年度.NendoStart);
+                command.Parameters.AddWithValue("@NENDO_END", 年度.NendoEnd);
 
                 cnt = command.ExecuteNonQuery();
             }
             return cnt;
         }
-        (string NendoStart,string NendoEnd)Get年度(int Year)
+        (DateTime NendoStart,DateTime NendoEnd)Get年度(int Year)
         {
-            (string NendoStart, string NendoEnd) ret;
+            (DateTime NendoStart, DateTime NendoEnd) ret;
 
             int end = Year + 1;
 
-            ret.NendoStart = Year.ToString() + "-04";
-            ret.NendoEnd = end.ToString() + "-03";
+            ret.NendoStart = new DateTime(Year, 4, 1);
+            ret.NendoEnd = ret.NendoStart.AddYears(1);
 
             return ret;
         }
