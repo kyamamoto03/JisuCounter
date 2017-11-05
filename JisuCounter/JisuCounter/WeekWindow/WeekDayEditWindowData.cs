@@ -74,7 +74,7 @@ namespace JisuCounter.WeekWindow
             {
                 int SearchKoma = 2;
                 SetKoma(value, SearchKoma);
-                RaisePropertyChanged("Koma1");
+                RaisePropertyChanged("Koma2");
             }
         }
 
@@ -89,7 +89,7 @@ namespace JisuCounter.WeekWindow
             {
                 int SearchKoma = 3;
                 SetKoma(value, SearchKoma);
-                RaisePropertyChanged("Koma1");
+                RaisePropertyChanged("Koma3");
             }
         }
 
@@ -104,7 +104,7 @@ namespace JisuCounter.WeekWindow
             {
                 int SearchKoma = 4;
                 SetKoma(value, SearchKoma);
-                RaisePropertyChanged("Koma1");
+                RaisePropertyChanged("Koma4");
             }
         }
 
@@ -119,7 +119,7 @@ namespace JisuCounter.WeekWindow
             {
                 int SearchKoma = 5;
                 SetKoma(value, SearchKoma);
-                RaisePropertyChanged("Koma1");
+                RaisePropertyChanged("Koma5");
             }
         }
         public MS_KYOUKA Koma6
@@ -133,10 +133,38 @@ namespace JisuCounter.WeekWindow
             {
                 int SearchKoma = 6;
                 SetKoma(value, SearchKoma);
-                RaisePropertyChanged("Koma1");
+                RaisePropertyChanged("Koma6");
             }
         }
 
+        public MS_KYOUKA Koma7
+        {
+            get
+            {
+                int SearchKoma = 7;
+                return GetKoma(SearchKoma);
+            }
+            set
+            {
+                int SearchKoma = 7;
+                SetKoma(value, SearchKoma);
+                RaisePropertyChanged("Koma7");
+            }
+        }
+        public MS_KYOUKA Koma8
+        {
+            get
+            {
+                int SearchKoma = 8;
+                return GetKoma(SearchKoma);
+            }
+            set
+            {
+                int SearchKoma = 8;
+                SetKoma(value, SearchKoma);
+                RaisePropertyChanged("Koma8");
+            }
+        }
         private void SetKoma(MS_KYOUKA value, int SearchKoma)
         {
             var data = MsWeeks.Where(x => x.KOMA == SearchKoma).FirstOrDefault();

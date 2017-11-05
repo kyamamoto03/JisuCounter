@@ -46,12 +46,16 @@ namespace JisuCounter.WeekWindow
             RaisePropertyChanged("Koma4_Foreground");
             RaisePropertyChanged("Koma5_Foreground");
             RaisePropertyChanged("Koma6_Foreground");
+            RaisePropertyChanged("Koma7_Foreground");
+            RaisePropertyChanged("Koma8_Foreground");
             RaisePropertyChanged("KOMA1");
             RaisePropertyChanged("KOMA2");
             RaisePropertyChanged("KOMA3");
             RaisePropertyChanged("KOMA4");
             RaisePropertyChanged("KOMA5");
             RaisePropertyChanged("KOMA6");
+            RaisePropertyChanged("KOMA7");
+            RaisePropertyChanged("KOMA8");
         }
 
         public void Add(IEnumerable<MS_WEEK> weeks)
@@ -69,6 +73,8 @@ namespace JisuCounter.WeekWindow
             RaisePropertyChanged("KOMA4");
             RaisePropertyChanged("KOMA5");
             RaisePropertyChanged("KOMA6");
+            RaisePropertyChanged("KOMA7");
+            RaisePropertyChanged("KOMA8");
         }
 
 
@@ -181,6 +187,42 @@ namespace JisuCounter.WeekWindow
                 return DEFALUT_COLOR;
             }
         }
+        public string Koma7_Foreground
+        {
+            get
+            {
+                int KOMA = 7;
+                var KomaData = MsWeeks.Where(x => x.KOMA == KOMA).FirstOrDefault();
+
+                if (KomaData != null)
+                {
+                    var kyouka = MS_KYOUKA_CACHE.Get(KomaData.MS_KYOUKA_ID);
+                    if (kyouka.COLOR != null)
+                    {
+                        return kyouka.COLOR;
+                    }
+                }
+                return DEFALUT_COLOR;
+            }
+        }
+        public string Koma8_Foreground
+        {
+            get
+            {
+                int KOMA = 8;
+                var KomaData = MsWeeks.Where(x => x.KOMA == KOMA).FirstOrDefault();
+
+                if (KomaData != null)
+                {
+                    var kyouka = MS_KYOUKA_CACHE.Get(KomaData.MS_KYOUKA_ID);
+                    if (kyouka.COLOR != null)
+                    {
+                        return kyouka.COLOR;
+                    }
+                }
+                return DEFALUT_COLOR;
+            }
+        }
 
         public string KOMA1
         {
@@ -267,6 +309,38 @@ namespace JisuCounter.WeekWindow
             get
             {
                 int KOMA = 6;
+                StringBuilder sb = new StringBuilder();
+                var KomaData = MsWeeks.Where(x => x.KOMA == KOMA).FirstOrDefault();
+
+                if (KomaData != null)
+                {
+                    var kyouka = MS_KYOUKA_CACHE.Get(KomaData.MS_KYOUKA_ID);
+                    sb.AppendFormat("{0} {1}", kyouka.KYOUKA_NAME, kyouka.KYOUKA_RATIO);
+                }
+                return sb.ToString();
+            }
+        }
+        public string KOMA7
+        {
+            get
+            {
+                int KOMA = 7;
+                StringBuilder sb = new StringBuilder();
+                var KomaData = MsWeeks.Where(x => x.KOMA == KOMA).FirstOrDefault();
+
+                if (KomaData != null)
+                {
+                    var kyouka = MS_KYOUKA_CACHE.Get(KomaData.MS_KYOUKA_ID);
+                    sb.AppendFormat("{0} {1}", kyouka.KYOUKA_NAME, kyouka.KYOUKA_RATIO);
+                }
+                return sb.ToString();
+            }
+        }
+        public string KOMA8
+        {
+            get
+            {
+                int KOMA = 8;
                 StringBuilder sb = new StringBuilder();
                 var KomaData = MsWeeks.Where(x => x.KOMA == KOMA).FirstOrDefault();
 

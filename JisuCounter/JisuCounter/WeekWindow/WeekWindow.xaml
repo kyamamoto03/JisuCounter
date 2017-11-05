@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JisuCounter.WeekWindow"
         mc:Ignorable="d"
-        Title="WeekWindow" Height="220" Width="932">
+        Title="WeekWindow" Height="243.834" Width="1205.621">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>

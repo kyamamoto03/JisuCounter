@@ -18,6 +18,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
@@ -31,13 +32,18 @@
                 <ComboBox  ItemsSource="{Binding KyoukaMaster}" SelectedItem="{Binding Koma2}" Grid.Row="1" Grid.Column="1"/>
                 <Label Content="3" Grid.Row ="0" Grid.Column="2" FontSize="8"/>
                 <ComboBox ItemsSource="{Binding KyoukaMaster}" SelectedItem="{Binding Koma3}" Grid.Row="1" Grid.Column="2"/>
+                <Label Content="4" Grid.Row ="0" Grid.Column="4" FontSize="8"/>
+                <ComboBox ItemsSource="{Binding KyoukaMaster}" SelectedItem="{Binding Koma4}" Grid.Row="1" Grid.Column="3"/>
+                
+                <Label Content="5" Grid.Row ="2" Grid.Column="0" FontSize="8"/>
+                <ComboBox ItemsSource="{Binding KyoukaMaster}" SelectedItem="{Binding Koma5}" Grid.Row="3" Grid.Column="0"/>
+                <Label Content="6" Grid.Row ="2" Grid.Column="1" FontSize="8"/>
+                <ComboBox ItemsSource="{Binding KyoukaMaster}" SelectedItem="{Binding Koma6}" Grid.Row="3" Grid.Column="1"/>
+                <Label Content="7" Grid.Row ="2" Grid.Column="2" FontSize="8"/>
+                <ComboBox ItemsSource="{Binding KyoukaMaster}" SelectedItem="{Binding Koma7}" Grid.Row="3" Grid.Column="2"/>
+                <Label Content="8" Grid.Row ="2" Grid.Column="3" FontSize="8"/>
+                <ComboBox ItemsSource="{Binding KyoukaMaster}" SelectedItem="{Binding Koma8}" Grid.Row="3" Grid.Column="3"/>
 
-                <Label Content="4" Grid.Row ="2" Grid.Column="0" FontSize="8"/>
-                <ComboBox ItemsSource="{Binding KyoukaMaster}" SelectedItem="{Binding Koma4}" Grid.Row="3" Grid.Column="0"/>
-                <Label Content="5" Grid.Row ="2" Grid.Column="1" FontSize="8"/>
-                <ComboBox ItemsSource="{Binding KyoukaMaster}" SelectedItem="{Binding Koma5}" Grid.Row="3" Grid.Column="1"/>
-                <Label Content="6" Grid.Row ="2" Grid.Column="2" FontSize="8"/>
-                <ComboBox ItemsSource="{Binding KyoukaMaster}" SelectedItem="{Binding Koma6}" Grid.Row="3" Grid.Column="2"/>
             </Grid>
         </Grid>
 
