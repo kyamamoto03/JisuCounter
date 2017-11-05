@@ -31,7 +31,7 @@ namespace JisuCounterData
                     return false;
             });
 
-            while (TargetDate < FinishDate)
+            while (TargetDate <= FinishDate)
             {
                 //MS_WEEKからTargetDateの曜日のデータを取得する
                 var YoubiDatas = MsWeeks.Where(x => x.DAY == (int)TargetDate.DayOfWeek);

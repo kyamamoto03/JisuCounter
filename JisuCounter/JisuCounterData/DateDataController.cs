@@ -52,6 +52,12 @@ order by JIKANWARI,KOMA
         {
             Dictionary<string, float> retDatas = new Dictionary<string, float>();
             StringBuilder sb = new StringBuilder();
+
+            ///１月から３月は年度指定のため、年をインクリメントする
+            if (Month < 4)
+            {
+                Year++;
+            }
             sb.AppendFormat("{0}{1}", Year, Month.ToString("d2"));
 
             var joinDatas = dateData.Where(x => x.JIKANWARI.ToString("yyyyMM") == sb.ToString()).Join(MS_KYOUKA_CACHE.GetAll(), x => x.MS_KYOUKA_ID, j => j.MS_KYOUKA_ID, (x, j) => new
@@ -91,6 +97,12 @@ order by JIKANWARI,KOMA
 
         public double 月合計(List<DateData> dateData, int Year, int Month)
         {
+            ///１月から３月は年度指定のため、年をインクリメントする
+            if (Month < 4)
+            {
+                Year++;
+            }
+
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{0}{1}", Year, Month.ToString("d2"));
 
